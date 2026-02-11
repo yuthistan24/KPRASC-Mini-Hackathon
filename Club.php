@@ -687,6 +687,51 @@
             margin-top: 20px;
         }
 
+        .database-results {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .database-results h3 {
+            color: #495057;
+            margin-bottom: 12px;
+        }
+
+        .database-note {
+            color: #6c757d;
+            font-size: 0.9em;
+            margin-bottom: 12px;
+        }
+
+        .database-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 12px;
+        }
+
+        .db-card {
+            background: white;
+            border-radius: 10px;
+            padding: 14px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        }
+
+        .db-card h4 {
+            color: #667eea;
+            margin-bottom: 8px;
+            font-size: 1em;
+        }
+
+        .db-list {
+            max-height: 220px;
+            overflow: auto;
+            color: #495057;
+            line-height: 1.45;
+            font-size: 0.9em;
+        }
+
         .tabs {
             display: flex;
             gap: 10px;
@@ -1086,6 +1131,29 @@
                     <div id="pendingStudents" class="pending-list active"></div>
                     <div id="pendingManagers" class="pending-list"></div>
                 </div>
+
+                <div class="database-results">
+                    <h3>Database Results</h3>
+                    <p class="database-note">Data is read from browser localStorage keys: <code>mathclub_users</code>, <code>mathclub_pending</code>, and <code>mathclub_events</code>.</p>
+                    <div class="database-grid">
+                        <div class="db-card">
+                            <h4>Summary</h4>
+                            <div class="db-list" id="dbSummary"></div>
+                        </div>
+                        <div class="db-card">
+                            <h4>Users</h4>
+                            <div class="db-list" id="dbUsers"></div>
+                        </div>
+                        <div class="db-card">
+                            <h4>Pending</h4>
+                            <div class="db-list" id="dbPending"></div>
+                        </div>
+                        <div class="db-card">
+                            <h4>Events</h4>
+                            <div class="db-list" id="dbEvents"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -1255,10 +1323,86 @@
         let events = DB.load('mathclub_events', []);
         let eventIdCounter = DB.load('mathclub_eventIdCounter', 1);
         let pendingRegistrations = DB.load('mathclub_pending', { students: {}, managers: {} });
+
+        function normalizeUsersData() {
+            if (!users || typeof users !== 'object') {
+                users = {};
+            }
+            if (!users.students || typeof users.students !== 'object') {
+                users.students = {};
+            }
+            if (!users.managers || typeof users.managers !== 'object') {
+                users.managers = {};
+            }
+            if (!users.admin || typeof users.admin !== 'object') {
+                users.admin = {};
+            }
+            if (Object.keys(users.admin).length === 0) {
+                users.admin.admin = 'admin123';
+            }
+            DB.save('mathclub_users', users);
+        }
+
+        function escapeHtml(value) {
+            return String(value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function refreshAdminDatabaseView() {
+            const latestUsers = DB.load('mathclub_users', { students: {}, managers: {}, admin: { admin: 'admin123' } });
+            const latestPending = DB.load('mathclub_pending', { students: {}, managers: {} });
+            const latestEvents = DB.load('mathclub_events', []);
+
+            const studentsCount = Object.keys(latestUsers.students || {}).length;
+            const managersCount = Object.keys(latestUsers.managers || {}).length;
+            const adminsCount = Object.keys(latestUsers.admin || {}).length;
+            const pendingStudentsCount = Object.keys(latestPending.students || {}).length;
+            const pendingManagersCount = Object.keys(latestPending.managers || {}).length;
+
+            const dbSummary = document.getElementById('dbSummary');
+            const dbUsers = document.getElementById('dbUsers');
+            const dbPending = document.getElementById('dbPending');
+            const dbEvents = document.getElementById('dbEvents');
+            if (!dbSummary || !dbUsers || !dbPending || !dbEvents) return;
+
+            dbSummary.innerHTML = `
+                <p>Admins: <strong>${adminsCount}</strong></p>
+                <p>Students: <strong>${studentsCount}</strong></p>
+                <p>Managers: <strong>${managersCount}</strong></p>
+                <p>Pending Students: <strong>${pendingStudentsCount}</strong></p>
+                <p>Pending Managers: <strong>${pendingManagersCount}</strong></p>
+                <p>Total Events: <strong>${latestEvents.length}</strong></p>
+            `;
+
+            dbUsers.innerHTML = `
+                <p><strong>Admin:</strong> ${Object.keys(latestUsers.admin || {}).map(escapeHtml).join(', ') || 'None'}</p>
+                <p><strong>Students:</strong> ${Object.keys(latestUsers.students || {}).map(escapeHtml).join(', ') || 'None'}</p>
+                <p><strong>Managers:</strong> ${Object.keys(latestUsers.managers || {}).map(escapeHtml).join(', ') || 'None'}</p>
+            `;
+
+            dbPending.innerHTML = `
+                <p><strong>Student Queue:</strong> ${Object.keys(latestPending.students || {}).map(escapeHtml).join(', ') || 'None'}</p>
+                <p><strong>Manager Queue:</strong> ${Object.keys(latestPending.managers || {}).map(escapeHtml).join(', ') || 'None'}</p>
+            `;
+
+            dbEvents.innerHTML = (latestEvents || []).map(event => {
+                const name = escapeHtml(event.name || 'Untitled');
+                const club = escapeHtml(event.club || 'General Club');
+                const date = escapeHtml(event.date || '');
+                return `<p><strong>${name}</strong> (${club}) ${date ? '- ' + date : ''}</p>`;
+            }).join('') || '<p>No events</p>';
+        }
+
+        normalizeUsersData();
         
         // This ensures the initial view is populated immediately.
         document.addEventListener('DOMContentLoaded', function() {
             displayWelcomeEvents();
+            refreshAdminDatabaseView();
         });
 
         // ============================================
@@ -1316,8 +1460,9 @@
             const password = document.getElementById(role + 'Password').value;
 
             if (role === 'admin') {
+                const adminUsers = users.admin || {};
                 // Check admin credentials
-                if (!users.admin[username] || users.admin[username] !== password) {
+                if (!adminUsers[username] || adminUsers[username] !== password) {
                     errorMsg.textContent = 'Invalid admin credentials';
                     return;
                 }
@@ -1330,6 +1475,8 @@
                 // Show admin dashboard and initialize pending registrations view
                 showPage('adminDashboard');
                 showPendingTab('student');
+                refreshAdminDatabaseView();
+                errorMsg.textContent = '';
                 return;
             }
 
@@ -1390,6 +1537,7 @@
                 pendingRegistrations = DB.load('mathclub_pending', { students: {}, managers: {} });
                 // Update the display
                 showPendingTab('student');
+                refreshAdminDatabaseView();
                 alert('Database has been reset successfully.');
             }
         }
@@ -1467,6 +1615,7 @@
             
             // Refresh display
             displayPendingRegistrations(type);
+            refreshAdminDatabaseView();
         }
 
         function register(e, role) {
@@ -1521,81 +1670,6 @@
             e.target.reset();
             alert('Registration submitted successfully! Please wait for admin approval.');
             showWelcome();
-        }
-
-        function showPendingTab(type) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelector(`.tab-btn[onclick="showPendingTab('${type}')"]`).classList.add('active');
-            
-            document.querySelectorAll('.pending-list').forEach(list => list.classList.remove('active'));
-            document.getElementById('pending' + type.charAt(0).toUpperCase() + type.slice(1) + 's').classList.add('active');
-            
-            displayPendingRegistrations(type);
-        }
-
-        function displayPendingRegistrations(type) {
-            const container = document.getElementById('pending' + type.charAt(0).toUpperCase() + type.slice(1) + 's');
-            const pendingList = pendingRegistrations[type + 's'] || {};
-            
-            container.innerHTML = '';
-            
-            if (Object.keys(pendingList).length === 0) {
-                container.innerHTML = '<p class="no-pending">No pending registrations</p>';
-                return;
-            }
-
-            for (const [username, profile] of Object.entries(pendingList)) {
-                const card = document.createElement('div');
-                card.className = 'registration-card';
-                card.innerHTML = `
-                    <h4>${profile.name}</h4>
-                    <div class="registration-details">
-                        <p><strong>Username:</strong> ${username}</p>
-                        <p><strong>Department:</strong> ${profile.department}</p>
-                        ${type === 'student' 
-                            ? `<p><strong>Roll Number:</strong> ${profile.rollNumber}</p>`
-                            : `<p><strong>Employee ID:</strong> ${profile.employeeId}</p>
-                               <p><strong>Club:</strong> ${profile.club}</p>`
-                        }
-                        <p><strong>Registration Date:</strong> ${new Date(profile.timestamp).toLocaleDateString()}</p>
-                    </div>
-                    <div class="verification-buttons">
-                        <button class="approve-btn" onclick="verifyRegistration('${type}', '${username}', true)">Approve</button>
-                        <button class="reject-btn" onclick="verifyRegistration('${type}', '${username}', false)">Reject</button>
-                    </div>
-                `;
-                container.appendChild(card);
-            }
-        }
-
-        function verifyRegistration(type, username, approved) {
-            const pendingList = pendingRegistrations[type + 's'];
-            const profile = pendingList[username];
-            
-            if (approved) {
-                // Add to active users
-                const userList = type === 'student' ? users.students : users.managers;
-                userList[username] = profile.password;
-                
-                // Save user profile
-                const profiles = DB.load('mathclub_profiles', {});
-                profiles[username] = profile;
-                DB.save('mathclub_profiles', profiles);
-                
-                alert(`${type.charAt(0).toUpperCase() + type.slice(1)} registration approved for ${username}`);
-            } else {
-                alert(`${type.charAt(0).toUpperCase() + type.slice(1)} registration rejected for ${username}`);
-            }
-            
-            // Remove from pending
-            delete pendingList[username];
-            
-            // Save changes
-            DB.save('mathclub_pending', pendingRegistrations);
-            DB.save('mathclub_users', users);
-            
-            // Refresh display
-            displayPendingRegistrations(type);
         }
 
         function toggleEventParticipation(eventId, action) {
