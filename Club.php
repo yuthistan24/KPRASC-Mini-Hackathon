@@ -1,7 +1,201 @@
-﻿<?php
+<?php
+if (isset($_GET['api']) && $_GET['api'] === 'events') {
+    header('Content-Type: application/json');
 
-?>
-<!DOCTYPE html>
+    try {
+        $dbDir = __DIR__ . DIRECTORY_SEPARATOR . 'data';
+        if (!is_dir($dbDir)) {
+            mkdir($dbDir, 0777, true);
+        }
+
+        $dbFile = $dbDir . DIRECTORY_SEPARATOR . 'clubhub.sqlite';
+        $pdo = new PDO('sqlite:' . $dbFile);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $pdo->exec(
+            "CREATE TABLE IF NOT EXISTS events (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                club TEXT NOT NULL,
+                date TEXT NOT NULL,
+                start_time TEXT NOT NULL,
+                end_time TEXT NOT NULL,
+                location TEXT NOT NULL,
+                description TEXT NOT NULL,
+                poster TEXT,
+                participants TEXT NOT NULL DEFAULT '[]',
+                created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+            )"
+        );
+
+        $count = (int)$pdo->query("SELECT COUNT(*) FROM events")->fetchColumn();
+        if ($count === 0) {
+            $seedEvents = [
+                [
+                    'AI Workshop and Hackathon', 'Tech Club', '2026-03-10', '10:00', '16:00',
+                    'CS Lab', 'Learn about AI and participate in an exciting hackathon.', './images/tech-workshop.jpg'
+                ],
+                [
+                    'Poetry Evening', 'Literature Club', '2026-03-14', '17:00', '19:00',
+                    'Main Auditorium', 'Share and listen to original poetry compositions.', './images/poetry.jpg'
+                ],
+                [
+                    'Dance Showcase', 'Dance Club', '2026-03-20', '16:00', '18:00',
+                    'Dance Studio', 'Annual dance showcase and workshop session.', './images/dance.jpg'
+                ],
+                [
+                    'Math Problem Solving Workshop', 'Math Club', '2026-03-24', '14:00', '16:00',
+                    'Room 101', 'Collaborative training for olympiad-style questions.', './images/math-workshop.jpg'
+                ]
+            ];
+
+            $ins = $pdo->prepare(
+                "INSERT INTO events (name, club, date, start_time, end_time, location, description, poster, participants)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, '[]')"
+            );
+            foreach ($seedEvents as $ev) {
+                $ins->execute($ev);
+            }
+        }
+
+        $action = $_GET['action'] ?? 'list';
+        $rawBody = file_get_contents('php://input');
+        $payload = json_decode($rawBody, true);
+        if (!is_array($payload)) {
+            $payload = [];
+        }
+
+        $formatEvent = static function(array $row): array {
+            $participants = json_decode($row['participants'] ?? '[]', true);
+            if (!is_array($participants)) {
+                $participants = [];
+            }
+            return [
+                'id' => (int)$row['id'],
+                'name' => $row['name'],
+                'club' => $row['club'],
+                'date' => $row['date'],
+                'startTime' => $row['start_time'],
+                'endTime' => $row['end_time'],
+                'location' => $row['location'],
+                'description' => $row['description'],
+                'poster' => $row['poster'],
+                'participants' => array_values($participants),
+            ];
+        };
+
+        if ($action === 'list') {
+            $rows = $pdo->query(
+                "SELECT id, name, club, date, start_time, end_time, location, description, poster, participants
+                 FROM events ORDER BY date ASC, start_time ASC, id ASC"
+            )->fetchAll(PDO::FETCH_ASSOC);
+
+            $events = array_map($formatEvent, $rows);
+            echo json_encode(['success' => true, 'events' => $events]);
+            exit;
+        }
+
+        if ($action === 'create') {
+            $required = ['name', 'club', 'date', 'startTime', 'endTime', 'location', 'description'];
+            foreach ($required as $field) {
+                if (!isset($payload[$field]) || trim((string)$payload[$field]) === '') {
+                    http_response_code(400);
+                    echo json_encode(['success' => false, 'error' => "Missing required field: $field"]);
+                    exit;
+                }
+            }
+
+            $poster = trim((string)($payload['poster'] ?? ''));
+            if ($poster === '') {
+                $poster = './images/tech-workshop.jpg';
+            }
+
+            $stmt = $pdo->prepare(
+                "INSERT INTO events (name, club, date, start_time, end_time, location, description, poster, participants)
+                 VALUES (:name, :club, :date, :start_time, :end_time, :location, :description, :poster, '[]')"
+            );
+            $stmt->execute([
+                ':name' => trim((string)$payload['name']),
+                ':club' => trim((string)$payload['club']),
+                ':date' => trim((string)$payload['date']),
+                ':start_time' => trim((string)$payload['startTime']),
+                ':end_time' => trim((string)$payload['endTime']),
+                ':location' => trim((string)$payload['location']),
+                ':description' => trim((string)$payload['description']),
+                ':poster' => $poster
+            ]);
+
+            echo json_encode(['success' => true, 'id' => (int)$pdo->lastInsertId()]);
+            exit;
+        }
+
+        if ($action === 'delete') {
+            $id = (int)($payload['id'] ?? 0);
+            if ($id <= 0) {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'error' => 'Invalid event id']);
+                exit;
+            }
+            $stmt = $pdo->prepare("DELETE FROM events WHERE id = :id");
+            $stmt->execute([':id' => $id]);
+            echo json_encode(['success' => true]);
+            exit;
+        }
+
+        if (in_array($action, ['join', 'leave', 'cancel'], true)) {
+            $id = (int)($payload['id'] ?? 0);
+            $username = trim((string)($payload['username'] ?? ''));
+            if ($id <= 0 || $username === '') {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'error' => 'Invalid id or username']);
+                exit;
+            }
+
+            $stmt = $pdo->prepare("SELECT participants FROM events WHERE id = :id");
+            $stmt->execute([':id' => $id]);
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            if (!$row) {
+                http_response_code(404);
+                echo json_encode(['success' => false, 'error' => 'Event not found']);
+                exit;
+            }
+
+            $participants = json_decode($row['participants'] ?? '[]', true);
+            if (!is_array($participants)) {
+                $participants = [];
+            }
+
+            if ($action === 'join') {
+                if (!in_array($username, $participants, true)) {
+                    $participants[] = $username;
+                }
+            } else {
+                $participants = array_values(array_filter(
+                    $participants,
+                    static fn($p) => $p !== $username
+                ));
+            }
+
+            $up = $pdo->prepare("UPDATE events SET participants = :participants WHERE id = :id");
+            $up->execute([
+                ':participants' => json_encode(array_values($participants)),
+                ':id' => $id
+            ]);
+
+            echo json_encode(['success' => true]);
+            exit;
+        }
+
+        http_response_code(400);
+        echo json_encode(['success' => false, 'error' => 'Unknown action']);
+        exit;
+    } catch (Throwable $e) {
+        http_response_code(500);
+        echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+        exit;
+    }
+}
+?><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -1389,7 +1583,7 @@
 
                 <div class="database-results">
                     <h3>Database Results</h3>
-                    <p class="database-note">Data is read from browser localStorage keys: <code>mathclub_users</code>, <code>mathclub_pending</code>, and <code>mathclub_events</code>.</p>
+                    <p class="database-note">Events are read from backend SQLite. User/pending data uses browser localStorage keys: <code>mathclub_users</code> and <code>mathclub_pending</code>.</p>
                     <div class="database-grid">
                         <div class="db-card">
                             <h4>Summary</h4>
@@ -1579,6 +1773,32 @@
         let events = DB.load('mathclub_events', []);
         let eventIdCounter = DB.load('mathclub_eventIdCounter', 1);
         let pendingRegistrations = DB.load('mathclub_pending', { students: {}, managers: {} });
+        const EVENTS_API_URL = 'Club.php?api=events';
+
+        async function eventsApi(action, method = 'GET', payload = null) {
+            const options = { method };
+            if (payload !== null) {
+                options.headers = { 'Content-Type': 'application/json' };
+                options.body = JSON.stringify(payload);
+            }
+
+            const response = await fetch(`${EVENTS_API_URL}&action=${encodeURIComponent(action)}`, options);
+            const data = await response.json().catch(() => ({}));
+            if (!response.ok || !data.success) {
+                throw new Error(data.error || `Request failed (${response.status})`);
+            }
+            return data;
+        }
+
+        async function loadEventsFromBackend() {
+            const data = await eventsApi('list');
+            events = Array.isArray(data.events) ? data.events : [];
+            const maxId = events.reduce((max, ev) => Math.max(max, Number(ev.id) || 0), 0);
+            eventIdCounter = maxId + 1;
+            DB.save('mathclub_events', events);
+            DB.save('mathclub_eventIdCounter', eventIdCounter);
+            return events;
+        }
 
         function normalizeUsersData() {
             if (!users || typeof users !== 'object') {
@@ -1656,9 +1876,25 @@
         normalizeUsersData();
         
         // This ensures the initial view is populated immediately.
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                await loadEventsFromBackend();
+            } catch (err) {
+                console.error('Failed to load events from backend:', err);
+            }
             displayWelcomeEvents();
             refreshAdminDatabaseView();
+        });
+
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'mathclub_users' || e.key === 'mathclub_pending') {
+                users = DB.load('mathclub_users', users);
+                pendingRegistrations = DB.load('mathclub_pending', pendingRegistrations);
+                refreshEventViews();
+                if (currentUser && currentUser.role === 'admin') {
+                    showPendingTab('student');
+                }
+            }
         });
 
         // ============================================
@@ -1676,7 +1912,12 @@
             document.querySelectorAll('form').forEach(form => form.reset());
         }
 
-        function showWelcome() {
+        async function showWelcome() {
+            try {
+                await loadEventsFromBackend();
+            } catch (err) {
+                console.error('Failed to load events from backend:', err);
+            }
             showPage('welcomePage');
             displayWelcomeEvents();
         }
@@ -1697,7 +1938,12 @@
         }
 
 
-        function showDashboard(role) {
+        async function showDashboard(role) {
+            try {
+                await loadEventsFromBackend();
+            } catch (err) {
+                console.error('Failed to load events from backend:', err);
+            }
             showPage(role + 'Dashboard');
             if (role === 'manager') {
                 displayManagerEvents();
@@ -1711,11 +1957,26 @@
             }
         }
 
+        async function refreshEventViews() {
+            try {
+                await loadEventsFromBackend();
+            } catch (err) {
+                console.error('Failed to refresh events from backend:', err);
+            }
+            displayWelcomeEvents();
+            if (currentUser && currentUser.role === 'student') {
+                displayStudentEvents();
+            } else if (currentUser && currentUser.role === 'manager') {
+                displayManagerEvents();
+            }
+            refreshAdminDatabaseView();
+        }
+
         // ============================================
         // AUTHENTICATION FUNCTIONS
         // ============================================
         
-        function login(e, role) {
+        async function login(e, role) {
             e.preventDefault();
             
             const errorMsg = document.getElementById(role + 'Error');
@@ -1723,6 +1984,13 @@
             const password = document.getElementById(role + 'Password').value;
 
             if (role === 'admin') {
+                users = DB.load('mathclub_users', users);
+                try {
+                    await loadEventsFromBackend();
+                } catch (err) {
+                    console.error('Failed to load events from backend:', err);
+                }
+                pendingRegistrations = DB.load('mathclub_pending', pendingRegistrations);
                 const adminUsers = users.admin || {};
                 // Check admin credentials
                 if (!adminUsers[username] || adminUsers[username] !== password) {
@@ -1774,7 +2042,7 @@
             }
 
             // Show appropriate dashboard
-            showDashboard(role);
+            await showDashboard(role);
 
             if (role === 'manager' && managerLoginTarget === 'createEvent') {
                 const managerEventForm = document.getElementById('managerEventForm');
@@ -1946,28 +2214,18 @@
             showWelcome();
         }
 
-        function toggleEventParticipation(eventId, action) {
-            // Reload latest events data
-            events = DB.load('mathclub_events', []);
-            
-            const event = events.find(e => e.id === eventId);
-            if (!event) return;
-            
-            if (action === 'join') {
-                if (!event.participants.includes(currentUser.username)) {
-                    event.participants.push(currentUser.username);
-                    alert('Successfully joined the event!');
-                }
-            } else {
-                event.participants = event.participants.filter(username => username !== currentUser.username);
-                alert('Successfully left the event.');
+        async function toggleEventParticipation(eventId, action) {
+            try {
+                await eventsApi(action === 'join' ? 'join' : 'leave', 'POST', {
+                    id: eventId,
+                    username: currentUser.username
+                });
+                alert(action === 'join' ? 'Successfully joined the event!' : 'Successfully left the event.');
+                await refreshEventViews();
+            } catch (err) {
+                console.error(err);
+                alert('Could not update event participation on the server.');
             }
-            
-            // Save updated events back to localStorage
-            DB.save('mathclub_events', events);
-            
-            // Refresh the display
-            displayStudentEvents();
         }
 
         // ============================================
@@ -1988,81 +2246,66 @@
             }
         });
 
-        function createEvent(e) {
+        async function createEvent(e) {
             e.preventDefault();
             
             const posterPreview = document.getElementById('posterPreview');
             const posterData = posterPreview.dataset.posterData || './images/tech-workshop.jpg';
             
             const newEvent = {
-                id: eventIdCounter++,
                 name: document.getElementById('eventName').value,
                 club: document.getElementById('eventClub').value,
                 date: document.getElementById('eventDate').value,
-                    startTime: document.getElementById('eventStartTime').value,
-                    endTime: document.getElementById('eventEndTime').value,
+                startTime: document.getElementById('eventStartTime').value,
+                endTime: document.getElementById('eventEndTime').value,
                 location: document.getElementById('eventLocation').value,
                 description: document.getElementById('eventDescription').value,
-                poster: posterData,
-                participants: []
+                poster: posterData
             };
-            
-            events.push(newEvent);
-            
-            // Save to localStorage
-            DB.save('mathclub_events', events);
-            DB.save('mathclub_eventIdCounter', eventIdCounter);
-            
-            e.target.reset();
-            // Refresh dashboard views and welcome page
-            displayManagerEvents(); 
-            displayWelcomeEvents();
+
+            try {
+                await eventsApi('create', 'POST', newEvent);
+                e.target.reset();
+                posterPreview.innerHTML = '';
+                delete posterPreview.dataset.posterData;
+                await refreshEventViews();
+            } catch (err) {
+                console.error(err);
+                alert('Could not create event on the server.');
+            }
         }
 
-        function deleteEvent(id) {
+        async function deleteEvent(id) {
             if (confirm('Are you sure you want to delete this event?')) {
-                events = events.filter(e => e.id !== id);
-                
-                // Save to localStorage
-                DB.save('mathclub_events', events);
-                
-                // Refresh dashboard views and welcome page
-                displayManagerEvents();
-                displayWelcomeEvents();
+                try {
+                    await eventsApi('delete', 'POST', { id: id });
+                    await refreshEventViews();
+                } catch (err) {
+                    console.error(err);
+                    alert('Could not delete event from the server.');
+                }
             }
         }
 
-        function cancelRegistration(eventId, username) {
+        async function cancelRegistration(eventId, username) {
             if (confirm(`Are you sure you want to cancel the registration for ${username}?`)) {
-                const event = events.find(e => e.id === eventId);
-                if (event) {
-                    event.participants = event.participants.filter(p => p !== username);
-                    
-                    // Save to localStorage
-                    DB.save('mathclub_events', events);
-                    
-                    // Refresh views
-                    displayManagerEvents();
-                    displayWelcomeEvents();
+                try {
+                    await eventsApi('cancel', 'POST', { id: eventId, username: username });
+                    await refreshEventViews();
+                } catch (err) {
+                    console.error(err);
+                    alert('Could not cancel registration on the server.');
                 }
             }
         }
 
-        function joinEvent(id) {
-            const event = events.find(e => e.id === id);
-            if (event && !event.participants.includes(currentUser)) {
-                event.participants.push(currentUser);
-                
-                // Save to localStorage
-                DB.save('mathclub_events', events);
-                
-                // Refresh views so manager and student dashboards reflect the change
-                if (currentUser.role === 'student') {
-                    displayStudentEvents();
-                } else if (currentUser.role === 'manager') {
-                    displayManagerEvents();
-                }
-                displayWelcomeEvents();
+        async function joinEvent(id) {
+            try {
+                await eventsApi('join', 'POST', { id: id, username: currentUser.username });
+                await refreshEventViews();
+            } catch (err) {
+                console.error(err);
+                alert('Could not join event on the server.');
             }
         }
 
@@ -2282,5 +2525,3 @@
     </script>
 </body>
 </html>
-
-
