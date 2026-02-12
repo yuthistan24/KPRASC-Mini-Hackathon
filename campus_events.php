@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CampusFlow Â· ðŸ¤– AI Event Assistant</title>
+    <title>CampusFlow · 🤖 AI Event Assistant</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -31,7 +31,7 @@
             display: block;
         }
 
-        /* ----- LOGIN â€“ ultra clean, floating card ----- */
+        /* ----- LOGIN – ultra clean, floating card ----- */
         .login-floating {
             display: flex;
             align-items: center;
@@ -172,7 +172,7 @@
             transform: scale(1.01);
         }
 
-        /* ----- GLOBAL HEADER â€“ frosted glass, premium ----- */
+        /* ----- GLOBAL HEADER – frosted glass, premium ----- */
         .app-header-frost {
             background: rgba(10, 45, 60, 0.82);
             backdrop-filter: blur(16px);
@@ -283,23 +283,43 @@
             font-weight: 700;
             color: white;
         }
-        .logout-action {
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: white;
-            padding: 0.7rem 1.6rem;
-            border-radius: 50px;
-            font-weight: 600;
-            display: flex;
-            gap: 10px;
-            cursor: pointer;
-            transition: 0.2s;
+
+        /* ----- LOGOUT AT BOTTOM OPPOSITE OF CHATBOT ----- */
+        .logout-bottom-fixed {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            z-index: 2000;
         }
-        .logout-action:hover {
-            background: rgba(234,84,85,0.25);
+        
+        .logout-action-bottom {
+            background: rgba(10, 56, 71, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 60px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 10px 25px rgba(10,56,71,0.3);
+            font-size: 1.1rem;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        .logout-action-bottom:hover {
+            background: rgba(234,84,85,0.9);
+            transform: scale(1.05);
+            border-color: rgba(255,255,255,0.5);
+        }
+        .logout-action-bottom i {
+            font-size: 1.3rem;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2));
         }
 
-        /* ----- LANGUAGE SELECTOR â€“ sleek ----- */
+        /* ----- LANGUAGE SELECTOR – sleek ----- */
         .lang-corner {
             position: fixed;
             top: 20px;
@@ -325,14 +345,7 @@
             font-size: 0.9rem;
         }
 
-        /* Move language selector when app header is visible to avoid overlap with logout */
-        body.app-active .lang-corner {
-            top: 86px;
-            right: 20px;
-            z-index: 1500;
-        }
-
-        /* ----- CHATBOT WIDGET â€“ AI ASSISTANT ----- */
+        /* ----- CHATBOT WIDGET – AI ASSISTANT ----- */
         .chatbot-toggle {
             position: fixed;
             bottom: 30px;
@@ -578,7 +591,7 @@
             box-shadow: 0 10px 18px -12px #0f4c5e;
         }
 
-        /* event cards â€“ glassy */
+        /* event cards – glassy */
         .event-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
@@ -675,7 +688,7 @@
             font-weight: 600;
         }
 
-        /* MODAL â€” glassiest */
+        /* MODAL — glassiest */
         .modal-glass {
             display: none;
             position: fixed;
@@ -778,7 +791,7 @@
             transform: none;
         }
 
-        /* participant list â€” excel button & FULL LIST SCROLL */
+        /* participant list — excel button & FULL LIST SCROLL */
         .participant-export-bar {
             display: flex;
             justify-content: flex-end;
@@ -855,27 +868,36 @@
             .glass-login { padding: 1.8rem; }
             .header-container { flex-direction: column; }
             .lang-corner { top: 10px; right: 10px; }
-            body.app-active .lang-corner { top: 116px; right: 10px; }
             .chatbot-panel { width: 320px; right: 20px; }
+            .logout-bottom-fixed { bottom: 20px; left: 20px; }
+            .logout-action-bottom { padding: 0.8rem 1.5rem; }
         }
     </style>
 </head>
 <body>
-    <!-- ===== CORNER LANGUAGE â€“ 10 à¤­à¤¾à¤·à¤¾à¤à¤ ===== -->
+    <!-- ===== CORNER LANGUAGE – TAMIL COMPULSORY (DEFAULT) ===== -->
     <div class="lang-corner">
         <i class="fas fa-globe-americas" style="color: #0a3847;"></i>
         <select id="language-select" onchange="changeLanguage(this.value)">
-            <option value="en">ðŸ‡¬ðŸ‡§ English</option>
-            <option value="hi">ðŸ‡®ðŸ‡³ à¤¹à¤¿à¤¨à¥à¤¦à¥€</option>
-            <option value="bn">ðŸ‡§ðŸ‡© à¦¬à¦¾à¦‚à¦²à¦¾</option>
-            <option value="te">ðŸ‡®ðŸ‡³ à°¤à±†à°²à±à°—à±</option>
-            <option value="ta">ðŸ‡®ðŸ‡³ à®¤à®®à®¿à®´à¯</option>
-            <option value="mr">ðŸ‡®ðŸ‡³ à¤®à¤°à¤¾à¤ à¥€</option>
-            <option value="gu">ðŸ‡®ðŸ‡³ àª—à«àªœàª°àª¾àª¤à«€</option>
-            <option value="kn">ðŸ‡®ðŸ‡³ à²•à²¨à³à²¨à²¡</option>
-            <option value="ml">ðŸ‡®ðŸ‡³ à´®à´²à´¯à´¾à´³à´‚</option>
-            <option value="pa">ðŸ‡®ðŸ‡³ à¨ªà©°à¨œà¨¾à¨¬à©€</option>
+            <option value="ta" selected>🇮🇳 தமிழ்</option>
+            <option value="en">🇬🇧 English</option>
+            <option value="hi">🇮🇳 हिन्दी</option>
+            <option value="bn">🇧🇩 বাংলা</option>
+            <option value="te">🇮🇳 తెలుగు</option>
+            <option value="mr">🇮🇳 मराठी</option>
+            <option value="gu">🇮🇳 ગુજરાતી</option>
+            <option value="kn">🇮🇳 ಕನ್ನಡ</option>
+            <option value="ml">🇮🇳 മലയാളം</option>
+            <option value="pa">🇮🇳 ਪੰਜਾਬੀ</option>
         </select>
+    </div>
+
+    <!-- ========== LOGOUT AT BOTTOM OPPOSITE OF CHATBOT ========== -->
+    <div class="logout-bottom-fixed" id="logout-bottom-container">
+        <div class="logout-action-bottom" id="logout-bottom-btn">
+            <i class="fas fa-sign-out-alt"></i> 
+            <span data-i18n="Exit">வெளியேறு</span>
+        </div>
     </div>
 
     <!-- ========== CHATBOT WIDGET ========== -->
@@ -884,7 +906,7 @@
     </div>
     <div class="chatbot-panel" id="chatbotPanel">
         <div class="chatbot-header">
-            <h3><i class="fas fa-robot"></i> <span data-i18n="AI Event Assistant">AI Event Assistant</span></h3>
+            <h3><i class="fas fa-robot"></i> <span data-i18n="AI Event Assistant">AI நிகழ்வு உதவியாளர்</span></h3>
             <div class="chatbot-controls">
                 <span id="minimizeChat"><i class="fas fa-minus"></i></span>
                 <span id="closeChat"><i class="fas fa-times"></i></span>
@@ -894,38 +916,38 @@
             <div class="message bot">
                 <div class="message-avatar"><i class="fas fa-robot"></i></div>
                 <div class="message-content">
-                    ðŸ‘‹ Hi! I'm your AI event assistant. Ask me anything about:
-                    <br>â€¢ Event dates, venue, fees
-                    <br>â€¢ Your registrations
-                    <br>â€¢ Payment status
-                    <br>â€¢ Event recommendations
-                    <br><br>Try: "When is Tech Fest?" or "à¤®à¥à¤«à¥à¤¤ à¤•à¤¾à¤°à¥à¤¯à¤•à¥à¤°à¤® à¤¦à¤¿à¤–à¤¾à¤à¤‚"
+                    👋 வணக்கம்! நான் உங்கள் AI நிகழ்வு உதவியாளர். இவற்றைப் பற்றி கேளுங்கள்:
+                    <br>• நிகழ்வு தேதிகள், இடம், கட்டணம்
+                    <br>• உங்கள் பதிவுகள்
+                    <br>• கட்டண நிலை
+                    <br>• நிகழ்வு பரிந்துரைகள்
+                    <br><br>Try: "When is Tech Fest?" or "முக்த் கார்யக்ரம் திகாஎன்"
                 </div>
             </div>
         </div>
         <div class="chat-input-area">
-            <input type="text" id="chatInput" placeholder="Type your question..." data-i18n-placeholder="chat_placeholder">
+            <input type="text" id="chatInput" placeholder="உங்கள் கேள்வியைத் தட்டச்சு செய்யவும்..." data-i18n-placeholder="chat_placeholder">
             <button id="sendMessage"><i class="fas fa-paper-plane"></i></button>
         </div>
     </div>
 
-    <!-- ========== LOGIN PAGE â€“ FRESH GLASS ========== -->
+    <!-- ========== LOGIN PAGE – FRESH GLASS ========== -->
     <div id="role-select-page" class="page active">
         <div class="login-floating">
             <div class="glass-login">
                 <div style="text-align: center;">
-                    <span class="app-title">ðŸŽª CampusFlow</span>
+                    <span class="app-title">🎪 CampusFlow</span>
                 </div>
-                <div class="pill-badge">âš¡ pick your path Â· à¤°à¤¾à¤¸à¥à¤¤à¤¾ à¤šà¥à¤¨à¥‡à¤‚</div>
+                <div class="pill-badge">⚡ pick your path · உங்கள் பாதையை தேர்வு செய்யவும்</div>
                 <div class="switch-group">
-                    <button id="loginRoleOrganizer" class="switch-role active">ðŸ“‹ Organizer Â· à¤†à¤¯à¥‹à¤œà¤•</button>
-                    <button id="loginRoleParticipant" class="switch-role">ðŸŽ“ Participant Â· à¤ªà¥à¤°à¤¤à¤¿à¤­à¤¾à¤—à¥€</button>
+                    <button id="loginRoleOrganizer" class="switch-role active">📋 Organizer · அமைப்பாளர்</button>
+                    <button id="loginRoleParticipant" class="switch-role">🎓 Participant · பங்கேற்பாளர்</button>
                 </div>
                 <div class="login-panel-container">
                     <!-- ORGANIZER -->
                     <div id="loginOrganizerPanel" class="login-panel active-panel">
                         <div class="panel-header">
-                            <h2>ðŸ“‹ <span data-i18n="Organizer">Organizer</span></h2>
+                            <h2>📋 <span data-i18n="Organizer">அமைப்பாளர்</span></h2>
                             <span style="background: rgba(0,0,0,0.04); padding: 0.5rem 1.5rem; border-radius: 50px;" data-i18n="manage_create">manage & create</span>
                         </div>
                         <form id="organizerLoginForm">
@@ -940,7 +962,7 @@
                     <!-- PARTICIPANT -->
                     <div id="loginParticipantPanel" class="login-panel">
                         <div class="panel-header">
-                            <h2>ðŸŽ“ <span data-i18n="Participant">Participant</span></h2>
+                            <h2>🎓 <span data-i18n="Participant">பங்கேற்பாளர்</span></h2>
                             <span style="background: rgba(0,0,0,0.04); padding: 0.5rem 1.5rem; border-radius: 50px;" data-i18n="join_events">join events</span>
                         </div>
                         <form id="participantLoginForm">
@@ -961,11 +983,11 @@
                     </div>
                 </div>
                 <div style="display: flex; justify-content: center; margin-top: 2.8rem;">
-                    <button class="btn-continue-glass" id="globalContinueBtn" data-i18n="Continue">Continue â†’</button>
+                    <button class="btn-continue-glass" id="globalContinueBtn" data-i18n="Continue">Continue →</button>
                 </div>
                 <div style="display: flex; gap: 2rem; justify-content: center; margin-top: 1.6rem;">
-                    <span style="font-size: 0.9rem; background: rgba(0,0,0,0.02); padding: 0.3rem 1.6rem; border-radius: 50px;">ðŸ“Œ <span data-i18n="organizer">organizer</span></span>
-                    <span style="font-size: 0.9rem; background: rgba(0,0,0,0.02); padding: 0.3rem 1.6rem; border-radius: 50px;">ðŸŽŸï¸ <span data-i18n="participant">participant</span></span>
+                    <span style="font-size: 0.9rem; background: rgba(0,0,0,0.02); padding: 0.3rem 1.6rem; border-radius: 50px;">📌 <span data-i18n="organizer">organizer</span></span>
+                    <span style="font-size: 0.9rem; background: rgba(0,0,0,0.02); padding: 0.3rem 1.6rem; border-radius: 50px;">🎟️ <span data-i18n="participant">participant</span></span>
                 </div>
             </div>
         </div>
@@ -994,7 +1016,7 @@
                         <div class="avatar-round" id="user-avatar">A</div>
                         <span class="user-name" id="user-name" style="color: white;">Admin</span>
                     </div>
-                    <div class="logout-action" id="logout-btn"><i class="fas fa-sign-out-alt"></i> <span data-i18n="Exit">Exit</span></div>
+                    <!-- Removed old logout from header -->
                 </div>
             </div>
         </div>
@@ -1002,7 +1024,7 @@
         <div class="app-main">
             <!-- DASHBOARD -->
             <div id="dashboard-page" class="page active">
-                <div class="section-head"><i class="fas fa-chart-pie"></i><h2><span data-i18n="Dashboard">Dashboard</span></h2><span style="background: #ea5455; color: white; padding: 0.3rem 1.2rem; border-radius: 50px; font-size: 0.9rem;">âœ¨ <span data-i18n="welcome">welcome</span> <span id="welcome-user">Admin</span></span></div>
+                <div class="section-head"><i class="fas fa-chart-pie"></i><h2><span data-i18n="Dashboard">Dashboard</span></h2><span style="background: #ea5455; color: white; padding: 0.3rem 1.2rem; border-radius: 50px; font-size: 0.9rem;">✨ <span data-i18n="welcome">welcome</span> <span id="welcome-user">Admin</span></span></div>
                 <div class="stats-array">
                     <div class="stat-tile"><div class="stat-symbol"><i class="fas fa-calendar-plus"></i></div><div><h3 style="font-size: 2.2rem;" id="upcoming-count">0</h3><p style="font-weight: 600;" data-i18n="Upcoming">Upcoming</p></div></div>
                     <div class="stat-tile"><div class="stat-symbol"><i class="fas fa-calendar-day"></i></div><div><h3 style="font-size: 2.2rem;" id="ongoing-count">0</h3><p style="font-weight: 600;" data-i18n="Ongoing">Ongoing</p></div></div>
@@ -1013,9 +1035,9 @@
                 <div id="dashboard-events" class="event-grid"></div>
             </div>
 
-            <!-- ALL EVENTS â€“ FULLY TRANSLATED EVENT CARDS -->
+            <!-- ALL EVENTS – FULLY TRANSLATED EVENT CARDS -->
             <div id="events-page" class="page">
-                <div class="section-head"><i class="fas fa-calendar-week"></i><h2><span data-i18n="All Events">ðŸŽŸï¸ All Events â€“ Register Now!</span></h2></div>
+                <div class="section-head"><i class="fas fa-calendar-week"></i><h2><span data-i18n="All Events">🎟️ All Events – Register Now!</span></h2></div>
                 <div id="all-events-container" class="event-grid"></div>
             </div>
 
@@ -1034,7 +1056,7 @@
                                     <option data-i18n="Sports">Sports</option>
                                     <option data-i18n="Competition">Competition</option>
                                 </select>
-                                <input type="number" id="event-price" class="input-glass" placeholder="Fee (â‚¹)" value="0" min="0" style="flex:1;" data-i18n-placeholder="fee_placeholder">
+                                <input type="number" id="event-price" class="input-glass" placeholder="Fee (₹)" value="0" min="0" style="flex:1;" data-i18n-placeholder="fee_placeholder">
                             </div>
                             <div style="display: flex; gap: 1.5rem;">
                                 <input type="date" id="event-date" class="input-glass" required>
@@ -1043,7 +1065,7 @@
                             <input type="text" id="event-venue" class="input-glass" placeholder="Venue" required data-i18n-placeholder="venue_placeholder">
                             <textarea id="event-description" rows="3" class="input-glass" placeholder="Description" required data-i18n-placeholder="description_placeholder"></textarea>
                             <input type="number" id="event-capacity" class="input-glass" placeholder="Capacity" value="100" min="1" data-i18n-placeholder="capacity_placeholder">
-                            <div><button type="submit" class="btn-soft" style="font-size: 1.1rem; padding: 1rem 2.5rem;"><i class="fas fa-calendar-plus"></i> <span data-i18n="Create Event">âœ¨ Create & Publish</span></button></div>
+                            <div><button type="submit" class="btn-soft" style="font-size: 1.1rem; padding: 1rem 2.5rem;"><i class="fas fa-calendar-plus"></i> <span data-i18n="Create Event">✨ Create & Publish</span></button></div>
                         </div>
                     </form>
                 </div>
@@ -1075,7 +1097,7 @@
             <div style="padding: 2.5rem;">
                 <div style="margin-bottom: 2rem;">
                     <h3 style="color: #0a3847;" id="payment-event-name"></h3>
-                    <p style="font-size: 1.4rem; font-weight: 700;"><span data-i18n="Amount">Amount</span>: â‚¹<span id="payment-amount">0</span></p>
+                    <p style="font-size: 1.4rem; font-weight: 700;"><span data-i18n="Amount">Amount</span>: ₹<span id="payment-amount">0</span></p>
                 </div>
                 
                 <!-- Payment Methods -->
@@ -1096,7 +1118,7 @@
                 
                 <!-- Bank Details Panel -->
                 <div id="bank-panel" style="display: none; background: #f0f5f8; padding: 1.8rem; border-radius: 32px;">
-                    <h4><span data-i18n="Bank Account Details">ðŸ¦ Bank Account Details</span></h4>
+                    <h4><span data-i18n="Bank Account Details">🏦 Bank Account Details</span></h4>
                     <p style="margin-top: 0.8rem;">
                         <strong data-i18n="Account Holder">Account Holder</strong>: CampusFlow Events<br>
                         <strong data-i18n="Account Number">Acc No</strong>: 1234567890123<br>
@@ -1136,7 +1158,7 @@
         </div>
     </div>
 
-    <!-- ========== EVENT DETAIL MODAL â€“ FULLY TRANSLATED ========== -->
+    <!-- ========== EVENT DETAIL MODAL – FULLY TRANSLATED ========== -->
     <div id="event-detail-modal" class="modal-glass">
         <div class="modal-glass-content">
             <div class="modal-glass-header">
@@ -1144,7 +1166,7 @@
                 <button class="close-modal-btn" id="close-detail-modal">&times;</button>
             </div>
             <div style="padding: 2.5rem;">
-                <div id="current-language-indicator" style="background: #0a3847; color: white; display: inline-block; padding: 0.3rem 1.5rem; border-radius: 60px; margin-bottom: 1rem;">ðŸŒ English</div>
+                <div id="current-language-indicator" style="background: #0a3847; color: white; display: inline-block; padding: 0.3rem 1.5rem; border-radius: 60px; margin-bottom: 1rem;">🇮🇳 தமிழ்</div>
                 <h2 style="font-size: 2rem; color: #0a3847;" id="detail-title"></h2>
                 <div style="display: flex; gap: 1.2rem; flex-wrap: wrap; margin: 1.5rem 0; color: #1a5b6e;" id="detail-meta"></div>
                 <div style="background: #f4fafd; padding: 2rem; border-radius: 24px; border-left: 6px solid #ea5455;" id="detail-description"></div>
@@ -1153,15 +1175,15 @@
         </div>
     </div>
 
-    <!-- ========== PARTICIPANTS MODAL â€“ FULLY TRANSLATED ========== -->
+    <!-- ========== PARTICIPANTS MODAL – FULLY TRANSLATED ========== -->
     <div id="participants-modal" class="modal-glass">
         <div class="modal-glass-content">
             <div class="modal-glass-header">
-                <h3><i class="fas fa-users"></i> <span data-i18n="Event Participants">Participants</span> â€” <span id="participant-count-badge"></span></h3>
+                <h3><i class="fas fa-users"></i> <span data-i18n="Event Participants">Participants</span> — <span id="participant-count-badge"></span></h3>
                 <button class="close-modal-btn" id="close-participants-modal">&times;</button>
             </div>
             <div style="padding: 2.2rem;" id="participants-list-content">
-                <!-- EXCEL button + FULL scrollable list injected via JS â€“ FULLY TRANSLATED -->
+                <!-- EXCEL button + FULL scrollable list injected via JS – FULLY TRANSLATED -->
             </div>
         </div>
     </div>
@@ -1193,13 +1215,140 @@
             ],
             currentPaymentEvent: null,
             currentDetailEvent: null,
-            currentLanguage: 'en',
+            currentLanguage: 'ta', // TAMIL COMPULSORY - DEFAULT
             currentPaymentFile: null
         };
 
-        // ---------- ðŸŒðŸŒðŸŒ COMPLETE 10 LANGUAGE TRANSLATIONS â€“ FULLY DEFINED ----------
+        // ---------- 🌍🌍🌍 COMPLETE 10 LANGUAGE TRANSLATIONS – TAMIL FIRST & FULLY DEFINED ----------
         const translations = {
-            // ENGLISH (DEFAULT)
+            // TAMIL (COMPULSORY - FULL TRANSLATION)
+            ta: {
+                "Dashboard": "டாஷ்போர்டு",
+                "All Events": "அனைத்து நிகழ்வுகள்",
+                "Create Event": "நிகழ்வை உருவாக்கு",
+                "My Events": "எனது நிகழ்வுகள்",
+                "Analytics": "பகுப்பாய்வு",
+                "Upcoming": "வரவிருக்கும்",
+                "Ongoing": "நடைபெறும்",
+                "My Regs": "எனது பதிவுகள்",
+                "Organized": "ஏற்பாடு செய்யப்பட்டது",
+                "Trending Events": "பிரபலமான நிகழ்வுகள்",
+                "Create New Event": "புதிய நிகழ்வை உருவாக்கு",
+                "Event Title": "நிகழ்வின் தலைப்பு",
+                "Category": "வகை",
+                "Event Fee": "கட்டணம்",
+                "Date": "தேதி",
+                "Time": "நேரம்",
+                "Venue": "இடம்",
+                "Description": "விளக்கம்",
+                "Capacity": "கொள்ளளவு",
+                "Register Free": "இலவச பதிவு",
+                "Register": "பதிவு செய்",
+                "Registered": "பதிவு செய்யப்பட்டது",
+                "Pay Now": "இப்போது செலுத்து",
+                "View Participants": "பங்கேற்பாளர்களைப் பார்க்க",
+                "Export All Data": "அனைத்து தரவையும் ஏற்றுமதி செய்",
+                "Complete Payment": "கட்டணத்தை முடிக்க",
+                "Amount": "தொகை",
+                "Bank Transfer": "வங்கி பரிமாற்றம்",
+                "Scan any UPI app": "எந்த UIP பயன்பாட்டிலும் ஸ்கேன் செய்யவும்",
+                "Bank Account Details": "வங்கி கணக்கு விவரங்கள்",
+                "Account Holder": "கணக்கு வைத்திருப்பவர்",
+                "Account Number": "கணக்கு எண்",
+                "Upload Payment Proof": "கட்டண ஆதாரத்தை பதிவேற்றுக",
+                "Choose Photo": "புகைப்படத்தை தேர்வு செய்",
+                "Submit Payment Proof": "கட்டண ஆதாரத்தை சமர்ப்பி",
+                "payment_note": "* ஏற்பாட்டாளர் கட்டணத்தை சரிபார்க்கும் வரை உங்கள் பதிவு நிலுவையில் இருக்கும்",
+                "Event Participants": "நிகழ்வு பங்கேற்பாளர்கள்",
+                "Event Details": "நிகழ்வு விவரங்கள்",
+                "Exit": "வெளியேறு",
+                "Continue": "தொடர்க →",
+                "Organizer": "ஏற்பாட்டாளர்",
+                "Participant": "பங்கேற்பாளர்",
+                "organizer": "ஏற்பாட்டாளர்",
+                "participant": "பங்கேற்பாளர்",
+                "manage_create": "நிர்வகி & உருவாக்கு",
+                "join_events": "நிகழ்வுகளில் சேர",
+                "fullname_club": "முழுப்பெயர் / கிளப்",
+                "Password": "கடவுச்சொல்",
+                "welcome": "வரவேற்கிறது",
+                "GPay": "GPay/UPI",
+                "Academic": "கல்வி",
+                "Workshop": "பயிலரங்கு",
+                "Cultural": "கலாச்சாரம்",
+                "Sports": "விளையாட்டு",
+                "Competition": "போட்டி",
+                "Export All Events": "அனைத்து நிகழ்வுகளையும் ஏற்றுமதி செய் (Excel)",
+                "event_title_placeholder": "நிகழ்வின் தலைப்பு *",
+                "fee_placeholder": "கட்டணம் (₹)",
+                "venue_placeholder": "இடம்",
+                "description_placeholder": "விளக்கம்",
+                "capacity_placeholder": "கொள்ளளவு",
+                "fullname_placeholder": "முழுப்பெயர்",
+                "dept_placeholder": "துறை",
+                "class_placeholder": "வகுப்பு",
+                "college_placeholder": "கல்லூரி",
+                "roll_placeholder": "பதிவு எண்",
+                "upload_instruction": "உங்கள் கட்டண உறுதிப்படுத்தலின் ஸ்கிரீன்ஷாட்டை பதிவேற்றவும்",
+                "chat_placeholder": "உங்கள் கேள்வியைத் தட்டச்சு செய்யவும்...",
+                "AI Event Assistant": "AI நிகழ்வு உதவியாளர்",
+                "desc_techfest": "ரோபாட்டிக்ஸ், கோடிங் போட்டிகள், பயிலரங்குகள் மற்றும் தொழில் நிபுணர்களுடன் நெட்வொர்க்கிங் கொண்ட மிகப்பெரிய தொழில்நுட்ப கண்காட்சி. ஆண்டின் மிகப்பெரிய தொழில்நுட்ப நிகழ்வை தவறவிடாதீர்கள்!",
+                "desc_hackathon": "₹50,000 பரிசுத் தொகையுடன் 48 மணி நேர கோடிங் போட்டி. 2-4 பேர் கொண்ட அணிகள் பங்கேற்கலாம். உணவு, காபி மற்றும் வழிகாட்டுதல் வழங்கப்படுகிறது. அற்புதமான ஒன்றை உருவாக்குங்கள்!",
+                "desc_cultural": "நடன நிகழ்ச்சிகள், நேரடி இசை, ஃபேஷன் ஷோ மற்றும் 20+ உணவு வகைகளுடன் கூடிய உணவுக் கடைகளுடன் வருடாந்திர கலாச்சார விழா. பன்முகத்தன்மையை கொண்டாடுங்கள்!",
+                "desc_aiworkshop": "பைத்தானுடன் AI மற்றும் மெஷின் லேர்னிங் குறித்த நேரடி பயிலரங்கு. தொழில் நிபுணர்களிடமிருந்து கற்றுக்கொள்ளுங்கள். உங்கள் லேப்டாப்பை கொண்டு வாருங்கள். சான்றிதழ் வழங்கப்படும்.",
+                "title_techfest": "டெக் ஃபெஸ்ட் 2026",
+                "title_hackathon": "ஹேக்கத்தான் சாம்பியன்ஷிப்",
+                "title_cultural": "கலாச்சார இரவு",
+                "title_aiworkshop": "AI & ML பயிலரங்கு",
+                "Invalid credentials": "தவறான சான்றுகள்",
+                "Welcome": "வரவேற்கிறது",
+                "Logged out": "வெளியேறியது",
+                "Only organizers can create events": "ஏற்பாட்டாளர்கள் மட்டுமே நிகழ்வுகளை உருவாக்க முடியும்",
+                "created and visible to all students!": "உருவாக்கப்பட்டு அனைத்து மாணவர்களுக்கும் தெரியும்!",
+                "Please select a payment proof file": "கட்டண ஆதாரக் கோப்பைத் தேர்ந்தெடுக்கவும்",
+                "Payment proof uploaded! Waiting for verification.": "கட்டண ஆதாரம் பதிவேற்றப்பட்டது! சரிபார்ப்புக்காக காத்திருக்கிறது.",
+                "Only participants can register": "பங்கேற்பாளர்கள் மட்டுமே பதிவு செய்ய முடியும்",
+                "Already registered": "ஏற்கனவே பதிவு செய்யப்பட்டது",
+                "Event is full": "நிகழ்வு நிரம்பியுள்ளது",
+                "Registered for": "இதற்கு பதிவு செய்யப்பட்டது",
+                "Export All Participants": "அனைத்து பங்கேற்பாளர்களையும் ஏற்றுமதி செய்",
+                "Total registrations": "மொத்த பதிவுகள்",
+                "Paid": "செலுத்தப்பட்டது",
+                "Pending": "நிலுவையில்",
+                "Free": "இலவசம்",
+                "Reg": "பதிவு",
+                "Payment Proof": "கட்டண ஆதாரம்",
+                "Image would open here": "படம் இங்கே திறக்கும்",
+                "View Payment Proof": "கட்டண ஆதாரத்தைப் பார்க்க",
+                "registered": "பதிவு செய்யப்பட்டது",
+                "Event Name": "நிகழ்வின் பெயர்",
+                "Participant Name": "பங்கேற்பாளரின் பெயர்",
+                "Student ID / Roll No": "மாணவர் ஐடி / பதிவு எண்",
+                "Email": "மின்னஞ்சல்",
+                "Department": "துறை",
+                "Class": "வகுப்பு",
+                "College": "கல்லூரி",
+                "Registration Date": "பதிவு தேதி",
+                "Payment Status": "கட்டண நிலை",
+                "Payment Method": "கட்டண முறை",
+                "Registration ID": "பதிவு ஐடி",
+                "participants exported to Excel": "பங்கேற்பாளர்கள் Excel க்கு ஏற்றுமதி செய்யப்பட்டனர்",
+                "Event Title": "நிகழ்வின் தலைப்பு",
+                "Price": "விலை",
+                "All events exported": "அனைத்து நிகழ்வுகளும் ஏற்றுமதி செய்யப்பட்டன",
+                "chat_greeting": "👋 வணக்கம்! நான் உங்கள் AI நிகழ்வு உதவியாளர். நிகழ்வுகள், பதிவுகள், கட்டணங்கள் பற்றி கேளுங்கள் அல்லது பரிந்துரைகளைப் பெறுங்கள்!",
+                "chat_event_info": "📅 {title} நிகழ்வு {date} அன்று {time} மணிக்கு {venue} இல் நடைபெறும். {price_desc} கொள்ளளவு: {capacity}. இதுவரை {registered} பேர் பதிவு செய்துள்ளனர்.",
+                "chat_free": "இலவச நிகழ்வு",
+                "chat_price": "கட்டணம்: ₹{price}",
+                "chat_registered": "✅ நீங்கள் {title} நிகழ்வுக்கு பதிவு செய்துள்ளீர்கள். நிலை: {status}",
+                "chat_not_registered": "❌ நீங்கள் {title} நிகழ்வுக்கு பதிவு செய்யவில்லை",
+                "chat_no_events": "உங்கள் கேள்விக்கு பொருந்தும் நிகழ்வுகள் எதுவும் கிடைக்கவில்லை.",
+                "chat_my_registrations": "📋 உங்களுக்கு {count} பதிவு(கள்) உள்ளன:\n{list}",
+                "chat_recommendations": "🎯 உங்கள் ஆர்வங்களின் அடிப்படையில், இவற்றைப் பாருங்கள்:\n{list}",
+                "chat_payment_status": "💳 {title} நிகழ்வுக்கான கட்டணம்: {status}",
+                "chat_help": "நான் இவற்றைப் பற்றி பதிலளிக்க முடியும்:\n• நிகழ்வு தேதிகள், இடம், கட்டணங்கள்\n• உங்கள் பதிவுகள்\n• கட்டண நிலை\n• நிகழ்வு பரிந்துரைகள்\n\nஎடுத்துக்காட்டு: 'டெக் ஃபெஸ்ட் எப்போது?' அல்லது 'இலவச நிகழ்வுகளைக் காட்டு'"
+            },
+            // ENGLISH 
             en: {
                 "Dashboard": "Dashboard",
                 "All Events": "All Events",
@@ -1240,7 +1389,7 @@
                 "Event Participants": "Event Participants",
                 "Event Details": "Event Details",
                 "Exit": "Exit",
-                "Continue": "Continue â†’",
+                "Continue": "Continue →",
                 "Organizer": "Organizer",
                 "Participant": "Participant",
                 "organizer": "organizer",
@@ -1258,7 +1407,7 @@
                 "Competition": "Competition",
                 "Export All Events": "Export All Events (Excel)",
                 "event_title_placeholder": "Event title *",
-                "fee_placeholder": "Fee (â‚¹)",
+                "fee_placeholder": "Fee (₹)",
                 "venue_placeholder": "Venue",
                 "description_placeholder": "Description",
                 "capacity_placeholder": "Capacity",
@@ -1271,7 +1420,7 @@
                 "chat_placeholder": "Type your question...",
                 "AI Event Assistant": "AI Event Assistant",
                 "desc_techfest": "Largest tech showcase with robotics, coding competitions, workshops, and networking with industry experts. Don't miss the biggest tech event of the year!",
-                "desc_hackathon": "48-hour coding competition with â‚¹50,000 prize pool. Teams of 2-4 can participate. Food, coffee, and mentorship provided. Build something amazing!",
+                "desc_hackathon": "48-hour coding competition with ₹50,000 prize pool. Teams of 2-4 can participate. Food, coffee, and mentorship provided. Build something amazing!",
                 "desc_cultural": "Annual cultural festival with dance performances, live music, fashion show, and food stalls from 20+ cuisines. Celebrate diversity!",
                 "desc_aiworkshop": "Hands-on workshop on AI & Machine Learning with Python. Learn from industry experts. Bring your own laptop. Certificate provided.",
                 "title_techfest": "Tech Fest 2026",
@@ -1314,100 +1463,39 @@
                 "Event Title": "Event Title",
                 "Price": "Price",
                 "All events exported": "All events exported",
-                "chat_greeting": "ðŸ‘‹ Hi! I'm your AI event assistant. Ask me about events, registration, payments, or get recommendations!",
-                "chat_event_info": "ðŸ“… {title} is on {date} at {time} at {venue}. {price_desc} Capacity: {capacity}. Currently {registered} registered.",
+                "chat_greeting": "👋 Hi! I'm your AI event assistant. Ask me about events, registration, payments, or get recommendations!",
+                "chat_event_info": "📅 {title} is on {date} at {time} at {venue}. {price_desc} Capacity: {capacity}. Currently {registered} registered.",
                 "chat_free": "Free event",
-                "chat_price": "Fee: â‚¹{price}",
-                "chat_registered": "âœ… You are registered for {title} with status: {status}",
-                "chat_not_registered": "âŒ You are not registered for {title}",
+                "chat_price": "Fee: ₹{price}",
+                "chat_registered": "✅ You are registered for {title} with status: {status}",
+                "chat_not_registered": "❌ You are not registered for {title}",
                 "chat_no_events": "No events found matching your query.",
-                "chat_my_registrations": "ðŸ“‹ You have {count} registration(s):\n{list}",
-                "chat_recommendations": "ðŸŽ¯ Based on your interests, check out:\n{list}",
-                "chat_payment_status": "ðŸ’³ Payment for {title}: {status}",
-                "chat_help": "I can answer questions about:\nâ€¢ Event dates, venue, fees\nâ€¢ Your registrations\nâ€¢ Payment status\nâ€¢ Event recommendations\n\nTry: 'When is Tech Fest?' or 'Show free events'"
+                "chat_my_registrations": "📋 You have {count} registration(s):\n{list}",
+                "chat_recommendations": "🎯 Based on your interests, check out:\n{list}",
+                "chat_payment_status": "💳 Payment for {title}: {status}",
+                "chat_help": "I can answer questions about:\n• Event dates, venue, fees\n• Your registrations\n• Payment status\n• Event recommendations\n\nTry: 'When is Tech Fest?' or 'Show free events'"
             },
-            
-            // HINDI â€“ abbreviated for brevity (full in final code)
-            hi: { "Dashboard": "à¤¡à¥ˆà¤¶à¤¬à¥‹à¤°à¥à¤¡", "All Events": "à¤¸à¤­à¥€ à¤•à¤¾à¤°à¥à¤¯à¤•à¥à¤°à¤®", "Create Event": "à¤•à¤¾à¤°à¥à¤¯à¤•à¥à¤°à¤® à¤¬à¤¨à¤¾à¤à¤‚", "My Events": "à¤®à¥‡à¤°à¥‡ à¤•à¤¾à¤°à¥à¤¯à¤•à¥à¤°à¤®", "Analytics": "à¤à¤¨à¤¾à¤²à¤¿à¤Ÿà¤¿à¤•à¥à¤¸", "Upcoming": "à¤†à¤—à¤¾à¤®à¥€", "Ongoing": "à¤šà¤¾à¤²à¥‚", "My Regs": "à¤®à¥‡à¤°à¥‡ à¤ªà¤‚à¤œà¥€à¤•à¤°à¤£", "Organized": "à¤†à¤¯à¥‹à¤œà¤¿à¤¤", "Trending Events": "à¤Ÿà¥à¤°à¥‡à¤‚à¤¡à¤¿à¤‚à¤— à¤‡à¤µà¥‡à¤‚à¤Ÿ", "Create New Event": "à¤¨à¤¯à¤¾ à¤•à¤¾à¤°à¥à¤¯à¤•à¥à¤°à¤® à¤¬à¤¨à¤¾à¤à¤‚", "Event Title": "à¤•à¤¾à¤°à¥à¤¯à¤•à¥à¤°à¤® à¤¶à¥€à¤°à¥à¤·à¤•", "Category": "à¤¶à¥à¤°à¥‡à¤£à¥€", "Event Fee": "à¤¶à¥à¤²à¥à¤•", "Date": "à¤¤à¤¾à¤°à¥€à¤–", "Time": "à¤¸à¤®à¤¯", "Venue": "à¤¸à¥à¤¥à¤¾à¤¨", "Description": "à¤µà¤¿à¤µà¤°à¤£", "Capacity": "à¤•à¥à¤·à¤®à¤¤à¤¾", "Register Free": "à¤®à¥à¤«à¥à¤¤ à¤ªà¤‚à¤œà¥€à¤•à¤°à¤£", "Register": "à¤ªà¤‚à¤œà¥€à¤•à¤°à¤£ à¤•à¤°à¥‡à¤‚", "Registered": "à¤ªà¤‚à¤œà¥€à¤•à¥ƒà¤¤", "Pay Now": "à¤…à¤­à¥€ à¤­à¥à¤—à¤¤à¤¾à¤¨ à¤•à¤°à¥‡à¤‚", "View Participants": "à¤ªà¥à¤°à¤¤à¤¿à¤­à¤¾à¤—à¥€ à¤¦à¥‡à¤–à¥‡à¤‚", "Export All Data": "à¤¸à¤­à¥€ à¤¡à¥‡à¤Ÿà¤¾ à¤¨à¤¿à¤°à¥à¤¯à¤¾à¤¤ à¤•à¤°à¥‡à¤‚", "Complete Payment": "à¤­à¥à¤—à¤¤à¤¾à¤¨ à¤ªà¥‚à¤°à¤¾ à¤•à¤°à¥‡à¤‚", "Amount": "à¤°à¤¾à¤¶à¤¿", "Bank Transfer": "à¤¬à¥ˆà¤‚à¤• à¤Ÿà¥à¤°à¤¾à¤‚à¤¸à¤«à¤°", "Scan any UPI app": "à¤•à¤¿à¤¸à¥€ à¤­à¥€ UPI à¤à¤ª à¤¸à¥‡ à¤¸à¥à¤•à¥ˆà¤¨ à¤•à¤°à¥‡à¤‚", "Bank Account Details": "à¤¬à¥ˆà¤‚à¤• à¤–à¤¾à¤¤à¤¾ à¤µà¤¿à¤µà¤°à¤£", "Account Holder": "à¤–à¤¾à¤¤à¤¾à¤§à¤¾à¤°à¤•", "Account Number": "à¤–à¤¾à¤¤à¤¾ à¤¸à¤‚à¤–à¥à¤¯à¤¾", "Upload Payment Proof": "à¤­à¥à¤—à¤¤à¤¾à¤¨ à¤¸à¤¬à¥‚à¤¤ à¤…à¤ªà¤²à¥‹à¤¡ à¤•à¤°à¥‡à¤‚", "Choose Photo": "à¤«à¥‹à¤Ÿà¥‹ à¤šà¥à¤¨à¥‡à¤‚", "Submit Payment Proof": "à¤­à¥à¤—à¤¤à¤¾à¤¨ à¤¸à¤¬à¥‚à¤¤ à¤œà¤®à¤¾ à¤•à¤°à¥‡à¤‚", "payment_note": "* à¤†à¤ªà¤•à¤¾ à¤ªà¤‚à¤œà¥€à¤•à¤°à¤£ à¤¤à¤¬ à¤¤à¤• à¤²à¤‚à¤¬à¤¿à¤¤ à¤°à¤¹à¥‡à¤—à¤¾ à¤œà¤¬ à¤¤à¤• à¤†à¤¯à¥‹à¤œà¤• à¤­à¥à¤—à¤¤à¤¾à¤¨ à¤¸à¤¤à¥à¤¯à¤¾à¤ªà¤¿à¤¤ à¤¨à¤¹à¥€à¤‚ à¤•à¤°à¤¤à¤¾", "Event Participants": "à¤•à¤¾à¤°à¥à¤¯à¤•à¥à¤°à¤® à¤ªà¥à¤°à¤¤à¤¿à¤­à¤¾à¤—à¥€", "Event Details": "à¤•à¤¾à¤°à¥à¤¯à¤•à¥à¤°à¤® à¤µà¤¿à¤µà¤°à¤£", "Exit": "à¤¬à¤¾à¤¹à¤° à¤œà¤¾à¤à¤‚", "Continue": "à¤œà¤¾à¤°à¥€ à¤°à¤–à¥‡à¤‚ â†’", "Organizer": "à¤†à¤¯à¥‹à¤œà¤•", "Participant": "à¤ªà¥à¤°à¤¤à¤¿à¤­à¤¾à¤—à¥€", "organizer": "à¤†à¤¯à¥‹à¤œà¤•", "participant": "à¤ªà¥à¤°à¤¤à¤¿à¤­à¤¾à¤—à¥€", "manage_create": "à¤ªà¥à¤°à¤¬à¤‚à¤§à¤¿à¤¤ à¤•à¤°à¥‡à¤‚ à¤”à¤° à¤¬à¤¨à¤¾à¤à¤‚", "join_events": "à¤•à¤¾à¤°à¥à¤¯à¤•à¥à¤°à¤®à¥‹à¤‚ à¤®à¥‡à¤‚ à¤¶à¤¾à¤®à¤¿à¤² à¤¹à¥‹à¤‚", "fullname_club": "à¤ªà¥‚à¤°à¤¾ à¤¨à¤¾à¤® / à¤•à¥à¤²à¤¬", "Password": "à¤ªà¤¾à¤¸à¤µà¤°à¥à¤¡", "welcome": "à¤¸à¥à¤µà¤¾à¤—à¤¤ à¤¹à¥ˆ", "GPay": "GPay/UPI", "Academic": "à¤¶à¥ˆà¤•à¥à¤·à¤£à¤¿à¤•", "Workshop": "à¤•à¤¾à¤°à¥à¤¯à¤¶à¤¾à¤²à¤¾", "Cultural": "à¤¸à¤¾à¤‚à¤¸à¥à¤•à¥ƒà¤¤à¤¿à¤•", "Sports": "à¤–à¥‡à¤²", "Competition": "à¤ªà¥à¤°à¤¤à¤¿à¤¯à¥‹à¤—à¤¿à¤¤à¤¾", "Export All Events": "à¤¸à¤­à¥€ à¤•à¤¾à¤°à¥à¤¯à¤•à¥à¤°à¤® à¤¨à¤¿à¤°à¥à¤¯à¤¾à¤¤ à¤•à¤°à¥‡à¤‚ (Excel)", "event_title_placeholder": "à¤•à¤¾à¤°à¥à¤¯à¤•à¥à¤°à¤® à¤¶à¥€à¤°à¥à¤·à¤• *", "fee_placeholder": "à¤¶à¥à¤²à¥à¤• (â‚¹)", "venue_placeholder": "à¤¸à¥à¤¥à¤¾à¤¨", "description_placeholder": "à¤µà¤¿à¤µà¤°à¤£", "capacity_placeholder": "à¤•à¥à¤·à¤®à¤¤à¤¾", "fullname_placeholder": "à¤ªà¥‚à¤°à¤¾ à¤¨à¤¾à¤®", "dept_placeholder": "à¤µà¤¿à¤­à¤¾à¤—", "class_placeholder": "à¤•à¤•à¥à¤·à¤¾", "college_placeholder": "à¤•à¥‰à¤²à¥‡à¤œ", "roll_placeholder": "à¤°à¥‹à¤² à¤¨à¤‚à¤¬à¤°", "upload_instruction": "à¤•à¥ƒà¤ªà¤¯à¤¾ à¤…à¤ªà¤¨à¥‡ à¤­à¥à¤—à¤¤à¤¾à¤¨ à¤ªà¥à¤·à¥à¤Ÿà¤¿à¤•à¤°à¤£ à¤•à¤¾ à¤¸à¥à¤•à¥à¤°à¥€à¤¨à¤¶à¥‰à¤Ÿ à¤…à¤ªà¤²à¥‹à¤¡ à¤•à¤°à¥‡à¤‚", "chat_placeholder": "à¤…à¤ªà¤¨à¤¾ à¤ªà¥à¤°à¤¶à¥à¤¨ à¤²à¤¿à¤–à¥‡à¤‚...", "AI Event Assistant": "AI à¤‡à¤µà¥‡à¤‚à¤Ÿ à¤¸à¤¹à¤¾à¤¯à¤•", "desc_techfest": "à¤°à¥‹à¤¬à¥‹à¤Ÿà¤¿à¤•à¥à¤¸, à¤•à¥‹à¤¡à¤¿à¤‚à¤— à¤ªà¥à¤°à¤¤à¤¿à¤¯à¥‹à¤—à¤¿à¤¤à¤¾à¤“à¤‚, à¤•à¤¾à¤°à¥à¤¯à¤¶à¤¾à¤²à¤¾à¤“à¤‚ à¤”à¤° à¤‰à¤¦à¥à¤¯à¥‹à¤— à¤µà¤¿à¤¶à¥‡à¤·à¤œà¥à¤žà¥‹à¤‚ à¤•à¥‡ à¤¸à¤¾à¤¥ à¤¨à¥‡à¤Ÿà¤µà¤°à¥à¤•à¤¿à¤‚à¤— à¤•à¥‡ à¤¸à¤¾à¤¥ à¤¸à¤¬à¤¸à¥‡ à¤¬à¤¡à¤¼à¤¾ à¤Ÿà¥‡à¤• à¤¶à¥‹à¤•à¥‡à¤¸à¥¤ à¤µà¤°à¥à¤· à¤•à¥‡ à¤¸à¤¬à¤¸à¥‡ à¤¬à¤¡à¤¼à¥‡ à¤¤à¤•à¤¨à¥€à¤•à¥€ à¤•à¤¾à¤°à¥à¤¯à¤•à¥à¤°à¤® à¤•à¥‹ à¤¨ à¤šà¥‚à¤•à¥‡à¤‚!", "desc_hackathon": "â‚¹50,000 à¤ªà¥à¤°à¤¸à¥à¤•à¤¾à¤° à¤°à¤¾à¤¶à¤¿ à¤•à¥‡ à¤¸à¤¾à¤¥ 48 à¤˜à¤‚à¤Ÿà¥‡ à¤•à¥€ à¤•à¥‹à¤¡à¤¿à¤‚à¤— à¤ªà¥à¤°à¤¤à¤¿à¤¯à¥‹à¤—à¤¿à¤¤à¤¾à¥¤ 2-4 à¤•à¥€ à¤Ÿà¥€à¤®à¥‡à¤‚ à¤­à¤¾à¤— à¤²à¥‡ à¤¸à¤•à¤¤à¥€ à¤¹à¥ˆà¤‚à¥¤ à¤­à¥‹à¤œà¤¨, à¤•à¥‰à¤«à¥€ à¤”à¤° à¤®à¥‡à¤‚à¤Ÿà¤°à¤¶à¤¿à¤ª à¤ªà¥à¤°à¤¦à¤¾à¤¨ à¤•à¥€ à¤œà¤¾à¤¤à¥€ à¤¹à¥ˆà¥¤ à¤•à¥à¤› à¤…à¤¦à¥à¤­à¥à¤¤ à¤¬à¤¨à¤¾à¤à¤‚!", "desc_cultural": "à¤¨à¥ƒà¤¤à¥à¤¯ à¤ªà¥à¤°à¤¦à¤°à¥à¤¶à¤¨, à¤²à¤¾à¤‡à¤µ à¤¸à¤‚à¤—à¥€à¤¤, à¤«à¥ˆà¤¶à¤¨ à¤¶à¥‹ à¤”à¤° 20+ à¤µà¥à¤¯à¤‚à¤œà¤¨à¥‹à¤‚ à¤•à¥‡ à¤–à¤¾à¤¦à¥à¤¯ à¤¸à¥à¤Ÿà¤¾à¤²à¥‹à¤‚ à¤•à¥‡ à¤¸à¤¾à¤¥ à¤µà¤¾à¤°à¥à¤·à¤¿à¤• à¤¸à¤¾à¤‚à¤¸à¥à¤•à¥ƒà¤¤à¤¿à¤• à¤‰à¤¤à¥à¤¸à¤µà¥¤ à¤µà¤¿à¤µà¤¿à¤§à¤¤à¤¾ à¤•à¤¾ à¤œà¤¶à¥à¤¨ à¤®à¤¨à¤¾à¤à¤‚!", "desc_aiworkshop": "à¤ªà¤¾à¤¯à¤¥à¤¨ à¤•à¥‡ à¤¸à¤¾à¤¥ à¤à¤†à¤ˆ à¤”à¤° à¤®à¤¶à¥€à¤¨ à¤²à¤°à¥à¤¨à¤¿à¤‚à¤— à¤ªà¤° à¤µà¥à¤¯à¤¾à¤µà¤¹à¤¾à¤°à¤¿à¤• à¤•à¤¾à¤°à¥à¤¯à¤¶à¤¾à¤²à¤¾à¥¤ à¤‰à¤¦à¥à¤¯à¥‹à¤— à¤µà¤¿à¤¶à¥‡à¤·à¤œà¥à¤žà¥‹à¤‚ à¤¸à¥‡ à¤¸à¥€à¤–à¥‡à¤‚à¥¤ à¤…à¤ªà¤¨à¤¾ à¤²à¥ˆà¤ªà¤Ÿà¥‰à¤ª à¤²à¤¾à¤à¤‚à¥¤ à¤ªà¥à¤°à¤®à¤¾à¤£à¤ªà¤¤à¥à¤° à¤ªà¥à¤°à¤¦à¤¾à¤¨ à¤•à¤¿à¤¯à¤¾ à¤—à¤¯à¤¾à¥¤", "title_techfest": "à¤Ÿà¥‡à¤• à¤«à¥‡à¤¸à¥à¤Ÿ 2026", "title_hackathon": "à¤¹à¥ˆà¤•à¤¾à¤¥à¥‰à¤¨ à¤šà¥ˆà¤‚à¤ªà¤¿à¤¯à¤¨à¤¶à¤¿à¤ª", "title_cultural": "à¤¸à¤¾à¤‚à¤¸à¥à¤•à¥ƒà¤¤à¤¿à¤• à¤°à¤¾à¤¤à¥à¤°à¤¿", "title_aiworkshop": "à¤à¤†à¤ˆ à¤”à¤° à¤à¤®à¤à¤² à¤•à¤¾à¤°à¥à¤¯à¤¶à¤¾à¤²à¤¾", "Invalid credentials": "à¤—à¤²à¤¤ à¤œà¤¾à¤¨à¤•à¤¾à¤°à¥€", "Welcome": "à¤¸à¥à¤µà¤¾à¤—à¤¤ à¤¹à¥ˆ", "Logged out": "à¤²à¥‰à¤— à¤†à¤‰à¤Ÿ", "Only organizers can create events": "à¤•à¥‡à¤µà¤² à¤†à¤¯à¥‹à¤œà¤• à¤¹à¥€ à¤•à¤¾à¤°à¥à¤¯à¤•à¥à¤°à¤® à¤¬à¤¨à¤¾ à¤¸à¤•à¤¤à¥‡ à¤¹à¥ˆà¤‚", "created and visible to all students!": "à¤¬à¤¨à¤¾à¤¯à¤¾ à¤—à¤¯à¤¾ à¤”à¤° à¤¸à¤­à¥€ à¤›à¤¾à¤¤à¥à¤°à¥‹à¤‚ à¤•à¥‡ à¤²à¤¿à¤ à¤¦à¥ƒà¤¶à¥à¤¯à¤®à¤¾à¤¨!", "Please select a payment proof file": "à¤•à¥ƒà¤ªà¤¯à¤¾ à¤­à¥à¤—à¤¤à¤¾à¤¨ à¤ªà¥à¤°à¤®à¤¾à¤£ à¤«à¤¼à¤¾à¤‡à¤² à¤šà¥à¤¨à¥‡à¤‚", "Payment proof uploaded! Waiting for verification.": "à¤­à¥à¤—à¤¤à¤¾à¤¨ à¤ªà¥à¤°à¤®à¤¾à¤£ à¤…à¤ªà¤²à¥‹à¤¡ à¤•à¤¿à¤¯à¤¾ à¤—à¤¯à¤¾! à¤¸à¤¤à¥à¤¯à¤¾à¤ªà¤¨ à¤•à¥€ à¤ªà¥à¤°à¤¤à¥€à¤•à¥à¤·à¤¾ à¤¹à¥ˆà¥¤", "Only participants can register": "à¤•à¥‡à¤µà¤² à¤ªà¥à¤°à¤¤à¤¿à¤­à¤¾à¤—à¥€ à¤¹à¥€ à¤ªà¤‚à¤œà¥€à¤•à¤°à¤£ à¤•à¤° à¤¸à¤•à¤¤à¥‡ à¤¹à¥ˆà¤‚", "Already registered": "à¤ªà¤¹à¤²à¥‡ à¤¸à¥‡ à¤ªà¤‚à¤œà¥€à¤•à¥ƒà¤¤", "Event is full": "à¤•à¤¾à¤°à¥à¤¯à¤•à¥à¤°à¤® à¤­à¤°à¤¾ à¤¹à¥à¤† à¤¹à¥ˆ", "Registered for": "à¤•à¥‡ à¤²à¤¿à¤ à¤ªà¤‚à¤œà¥€à¤•à¥ƒà¤¤", "Export All Participants": "à¤¸à¤­à¥€ à¤ªà¥à¤°à¤¤à¤¿à¤­à¤¾à¤—à¥€ à¤¨à¤¿à¤°à¥à¤¯à¤¾à¤¤ à¤•à¤°à¥‡à¤‚", "Total registrations": "à¤•à¥à¤² à¤ªà¤‚à¤œà¥€à¤•à¤°à¤£", "Paid": "à¤­à¥à¤—à¤¤à¤¾à¤¨ à¤•à¤¿à¤¯à¤¾", "Pending": "à¤²à¤‚à¤¬à¤¿à¤¤", "Free": "à¤®à¥à¤«à¥à¤¤", "Reg": "à¤ªà¤‚à¤œà¥€à¤•à¤°à¤£", "Payment Proof": "à¤­à¥à¤—à¤¤à¤¾à¤¨ à¤ªà¥à¤°à¤®à¤¾à¤£", "Image would open here": "à¤›à¤µà¤¿ à¤¯à¤¹à¤¾à¤‚ à¤–à¥à¤²à¥‡à¤—à¥€", "View Payment Proof": "à¤­à¥à¤—à¤¤à¤¾à¤¨ à¤ªà¥à¤°à¤®à¤¾à¤£ à¤¦à¥‡à¤–à¥‡à¤‚", "registered": "à¤ªà¤‚à¤œà¥€à¤•à¥ƒà¤¤", "Event Name": "à¤•à¤¾à¤°à¥à¤¯à¤•à¥à¤°à¤® à¤•à¤¾ à¤¨à¤¾à¤®", "Participant Name": "à¤ªà¥à¤°à¤¤à¤¿à¤­à¤¾à¤—à¥€ à¤•à¤¾ à¤¨à¤¾à¤®", "Student ID / Roll No": "à¤›à¤¾à¤¤à¥à¤° à¤†à¤ˆà¤¡à¥€ / à¤°à¥‹à¤² à¤¨à¤‚à¤¬à¤°", "Email": "à¤ˆà¤®à¥‡à¤²", "Department": "à¤µà¤¿à¤­à¤¾à¤—", "Class": "à¤•à¤•à¥à¤·à¤¾", "College": "à¤•à¥‰à¤²à¥‡à¤œ", "Registration Date": "à¤ªà¤‚à¤œà¥€à¤•à¤°à¤£ à¤¤à¤¿à¤¥à¤¿", "Payment Status": "à¤­à¥à¤—à¤¤à¤¾à¤¨ à¤¸à¥à¤¥à¤¿à¤¤à¤¿", "Payment Method": "à¤­à¥à¤—à¤¤à¤¾à¤¨ à¤µà¤¿à¤§à¤¿", "Registration ID": "à¤ªà¤‚à¤œà¥€à¤•à¤°à¤£ à¤†à¤ˆà¤¡à¥€", "participants exported to Excel": "à¤ªà¥à¤°à¤¤à¤¿à¤­à¤¾à¤—à¥€ Excel à¤®à¥‡à¤‚ à¤¨à¤¿à¤°à¥à¤¯à¤¾à¤¤ à¤•à¤¿à¤ à¤—à¤", "Event Title": "à¤•à¤¾à¤°à¥à¤¯à¤•à¥à¤°à¤® à¤¶à¥€à¤°à¥à¤·à¤•", "Price": "à¤®à¥‚à¤²à¥à¤¯", "All events exported": "à¤¸à¤­à¥€ à¤•à¤¾à¤°à¥à¤¯à¤•à¥à¤°à¤® à¤¨à¤¿à¤°à¥à¤¯à¤¾à¤¤ à¤•à¤¿à¤ à¤—à¤", "chat_greeting": "ðŸ‘‹ à¤¨à¤®à¤¸à¥à¤¤à¥‡! à¤®à¥ˆà¤‚ à¤†à¤ªà¤•à¤¾ AI à¤‡à¤µà¥‡à¤‚à¤Ÿ à¤¸à¤¹à¤¾à¤¯à¤• à¤¹à¥‚à¤à¥¤ à¤‡à¤µà¥‡à¤‚à¤Ÿ, à¤ªà¤‚à¤œà¥€à¤•à¤°à¤£, à¤­à¥à¤—à¤¤à¤¾à¤¨ à¤•à¥‡ à¤¬à¤¾à¤°à¥‡ à¤®à¥‡à¤‚ à¤ªà¥‚à¤›à¥‡à¤‚ à¤¯à¤¾ à¤¸à¥à¤à¤¾à¤µ à¤ªà¥à¤°à¤¾à¤ªà¥à¤¤ à¤•à¤°à¥‡à¤‚!", "chat_event_info": "ðŸ“… {title} {date} à¤•à¥‹ {time} à¤ªà¤° {venue} à¤®à¥‡à¤‚ à¤¹à¥ˆà¥¤ {price_desc} à¤•à¥à¤·à¤®à¤¤à¤¾: {capacity}à¥¤ à¤…à¤¬ à¤¤à¤• {registered} à¤ªà¤‚à¤œà¥€à¤•à¥ƒà¤¤à¥¤", "chat_free": "à¤®à¥à¤«à¥à¤¤ à¤•à¤¾à¤°à¥à¤¯à¤•à¥à¤°à¤®", "chat_price": "à¤¶à¥à¤²à¥à¤•: â‚¹{price}", "chat_registered": "âœ… à¤†à¤ª {title} à¤•à¥‡ à¤²à¤¿à¤ à¤ªà¤‚à¤œà¥€à¤•à¥ƒà¤¤ à¤¹à¥ˆà¤‚à¥¤ à¤¸à¥à¤¥à¤¿à¤¤à¤¿: {status}", "chat_not_registered": "âŒ à¤†à¤ª {title} à¤•à¥‡ à¤²à¤¿à¤ à¤ªà¤‚à¤œà¥€à¤•à¥ƒà¤¤ à¤¨à¤¹à¥€à¤‚ à¤¹à¥ˆà¤‚", "chat_no_events": "à¤†à¤ªà¤•à¥‡ à¤ªà¥à¤°à¤¶à¥à¤¨ à¤¸à¥‡ à¤®à¥‡à¤² à¤–à¤¾à¤¤à¤¾ à¤•à¥‹à¤ˆ à¤•à¤¾à¤°à¥à¤¯à¤•à¥à¤°à¤® à¤¨à¤¹à¥€à¤‚ à¤®à¤¿à¤²à¤¾à¥¤", "chat_my_registrations": "ðŸ“‹ à¤†à¤ªà¤•à¥‡ {count} à¤ªà¤‚à¤œà¥€à¤•à¤°à¤£ à¤¹à¥ˆà¤‚:\n{list}", "chat_recommendations": "ðŸŽ¯ à¤†à¤ªà¤•à¥€ à¤°à¥à¤šà¤¿à¤¯à¥‹à¤‚ à¤•à¥‡ à¤†à¤§à¤¾à¤° à¤ªà¤°, à¤¯à¥‡ à¤¦à¥‡à¤–à¥‡à¤‚:\n{list}", "chat_payment_status": "ðŸ’³ {title} à¤•à¥‡ à¤²à¤¿à¤ à¤­à¥à¤—à¤¤à¤¾à¤¨: {status}", "chat_help": "à¤®à¥ˆà¤‚ à¤‡à¤¨à¤•à¥‡ à¤¬à¤¾à¤°à¥‡ à¤®à¥‡à¤‚ à¤œà¤¾à¤¨à¤•à¤¾à¤°à¥€ à¤¦à¥‡ à¤¸à¤•à¤¤à¤¾ à¤¹à¥‚à¤:\nâ€¢ à¤‡à¤µà¥‡à¤‚à¤Ÿ à¤•à¥€ à¤¤à¤¾à¤°à¥€à¤–, à¤¸à¥à¤¥à¤¾à¤¨, à¤¶à¥à¤²à¥à¤•\nâ€¢ à¤†à¤ªà¤•à¥‡ à¤ªà¤‚à¤œà¥€à¤•à¤°à¤£\nâ€¢ à¤­à¥à¤—à¤¤à¤¾à¤¨ à¤¸à¥à¤¥à¤¿à¤¤à¤¿\nâ€¢ à¤‡à¤µà¥‡à¤‚à¤Ÿ à¤¸à¥à¤à¤¾à¤µ\n\nà¤‰à¤¦à¤¾à¤¹à¤°à¤£: 'à¤Ÿà¥‡à¤• à¤«à¥‡à¤¸à¥à¤Ÿ à¤•à¤¬ à¤¹à¥ˆ?' à¤¯à¤¾ 'à¤®à¥à¤«à¥à¤¤ à¤•à¤¾à¤°à¥à¤¯à¤•à¥à¤°à¤® à¤¦à¤¿à¤–à¤¾à¤à¤‚'" },
-            // BENGALI (bn), TAMIL (ta), TELUGU (te), MARATHI (mr), GUJARATI (gu), KANNADA (kn), MALAYALAM (ml), PUNJABI (pa) 
-            // For brevity, only keys with Hindi are shown. In final code, all 10 languages are included (as per previous massive object). 
-            // To keep answer concise, I've placed only essential languages; but in the final deployed version, all 10 will be present as in original. 
-            // Using placeholders to indicate completeness â€“ actual full object included in implementation.
+            // HINDI 
+            hi: { "Dashboard": "डैशबोर्ड", "All Events": "सभी कार्यक्रम", "Create Event": "कार्यक्रम बनाएं", "My Events": "मेरे कार्यक्रम", "Analytics": "एनालिटिक्स", "Upcoming": "आगामी", "Ongoing": "चालू", "My Regs": "मेरे पंजीकरण", "Organized": "आयोजित", "Trending Events": "ट्रेंडिंग इवेंट", "Create New Event": "नया कार्यक्रम बनाएं", "Event Title": "कार्यक्रम शीर्षक", "Category": "श्रेणी", "Event Fee": "शुल्क", "Date": "तारीख", "Time": "समय", "Venue": "स्थान", "Description": "विवरण", "Capacity": "क्षमता", "Register Free": "मुफ्त पंजीकरण", "Register": "पंजीकरण करें", "Registered": "पंजीकृत", "Pay Now": "अभी भुगतान करें", "View Participants": "प्रतिभागी देखें", "Export All Data": "सभी डेटा निर्यात करें", "Complete Payment": "भुगतान पूरा करें", "Amount": "राशि", "Bank Transfer": "बैंक ट्रांसफर", "Scan any UPI app": "किसी भी UPI ऐप से स्कैन करें", "Bank Account Details": "बैंक खाता विवरण", "Account Holder": "खाताधारक", "Account Number": "खाता संख्या", "Upload Payment Proof": "भुगतान सबूत अपलोड करें", "Choose Photo": "फोटो चुनें", "Submit Payment Proof": "भुगतान सबूत जमा करें", "payment_note": "* आपका पंजीकरण तब तक लंबित रहेगा जब तक आयोजक भुगतान सत्यापित नहीं करता", "Event Participants": "कार्यक्रम प्रतिभागी", "Event Details": "कार्यक्रम विवरण", "Exit": "बाहर जाएं", "Continue": "जारी रखें →", "Organizer": "आयोजक", "Participant": "प्रतिभागी", "organizer": "आयोजक", "participant": "प्रतिभागी", "manage_create": "प्रबंधित करें और बनाएं", "join_events": "कार्यक्रमों में शामिल हों", "fullname_club": "पूरा नाम / क्लब", "Password": "पासवर्ड", "welcome": "स्वागत है", "GPay": "GPay/UPI", "Academic": "शैक्षणिक", "Workshop": "कार्यशाला", "Cultural": "सांस्कृतिक", "Sports": "खेल", "Competition": "प्रतियोगिता", "Export All Events": "सभी कार्यक्रम निर्यात करें (Excel)", "event_title_placeholder": "कार्यक्रम शीर्षक *", "fee_placeholder": "शुल्क (₹)", "venue_placeholder": "स्थान", "description_placeholder": "विवरण", "capacity_placeholder": "क्षमता", "fullname_placeholder": "पूरा नाम", "dept_placeholder": "विभाग", "class_placeholder": "कक्षा", "college_placeholder": "कॉलेज", "roll_placeholder": "रोल नंबर", "upload_instruction": "कृपया अपने भुगतान पुष्टिकरण का स्क्रीनशॉट अपलोड करें", "chat_placeholder": "अपना प्रश्न लिखें...", "AI Event Assistant": "AI इवेंट सहायक", "desc_techfest": "रोबोटिक्स, कोडिंग प्रतियोगिताओं, कार्यशालाओं और उद्योग विशेषज्ञों के साथ नेटवर्किंग के साथ सबसे बड़ा टेक शोकेस। वर्ष के सबसे बड़े तकनीकी कार्यक्रम को न चूकें!", "desc_hackathon": "₹50,000 पुरस्कार राशि के साथ 48 घंटे की कोडिंग प्रतियोगिता। 2-4 की टीमें भाग ले सकती हैं। भोजन, कॉफी और मेंटरशिप प्रदान की जाती है। कुछ अद्भुत बनाएं!", "desc_cultural": "नृत्य प्रदर्शन, लाइव संगीत, फैशन शो और 20+ व्यंजनों के खाद्य स्टालों के साथ वार्षिक सांस्कृतिक उत्सव। विविधता का जश्न मनाएं!", "desc_aiworkshop": "पायथन के साथ एआई और मशीन लर्निंग पर व्यावहारिक कार्यशाला। उद्योग विशेषज्ञों से सीखें। अपना लैपटॉप लाएं। प्रमाणपत्र प्रदान किया गया।", "title_techfest": "टेक फेस्ट 2026", "title_hackathon": "हैकाथॉन चैंपियनशिप", "title_cultural": "सांस्कृतिक रात्रि", "title_aiworkshop": "एआई और एमएल कार्यशाला", "Invalid credentials": "गलत जानकारी", "Welcome": "स्वागत है", "Logged out": "लॉग आउट", "Only organizers can create events": "केवल आयोजक ही कार्यक्रम बना सकते हैं", "created and visible to all students!": "बनाया गया और सभी छात्रों के लिए दृश्यमान!", "Please select a payment proof file": "कृपया भुगतान प्रमाण फ़ाइल चुनें", "Payment proof uploaded! Waiting for verification.": "भुगतान प्रमाण अपलोड किया गया! सत्यापन की प्रतीक्षा है।", "Only participants can register": "केवल प्रतिभागी ही पंजीकरण कर सकते हैं", "Already registered": "पहले से पंजीकृत", "Event is full": "कार्यक्रम भरा हुआ है", "Registered for": "के लिए पंजीकृत", "Export All Participants": "सभी प्रतिभागी निर्यात करें", "Total registrations": "कुल पंजीकरण", "Paid": "भुगतान किया", "Pending": "लंबित", "Free": "मुफ्त", "Reg": "पंजीकरण", "Payment Proof": "भुगतान प्रमाण", "Image would open here": "छवि यहां खुलेगी", "View Payment Proof": "भुगतान प्रमाण देखें", "registered": "पंजीकृत", "Event Name": "कार्यक्रम का नाम", "Participant Name": "प्रतिभागी का नाम", "Student ID / Roll No": "छात्र आईडी / रोल नंबर", "Email": "ईमेल", "Department": "विभाग", "Class": "कक्षा", "College": "कॉलेज", "Registration Date": "पंजीकरण तिथि", "Payment Status": "भुगतान स्थिति", "Payment Method": "भुगतान विधि", "Registration ID": "पंजीकरण आईडी", "participants exported to Excel": "प्रतिभागी Excel में निर्यात किए गए", "Event Title": "कार्यक्रम शीर्षक", "Price": "मूल्य", "All events exported": "सभी कार्यक्रम निर्यात किए गए", "chat_greeting": "👋 नमस्ते! मैं आपका AI इवेंट सहायक हूँ। इवेंट, पंजीकरण, भुगतान के बारे में पूछें या सुझाव प्राप्त करें!", "chat_event_info": "📅 {title} {date} को {time} पर {venue} में है। {price_desc} क्षमता: {capacity}। अब तक {registered} पंजीकृत।", "chat_free": "मुफ्त कार्यक्रम", "chat_price": "शुल्क: ₹{price}", "chat_registered": "✅ आप {title} के लिए पंजीकृत हैं। स्थिति: {status}", "chat_not_registered": "❌ आप {title} के लिए पंजीकृत नहीं हैं", "chat_no_events": "आपके प्रश्न से मेल खाता कोई कार्यक्रम नहीं मिला।", "chat_my_registrations": "📋 आपके {count} पंजीकरण हैं:\n{list}", "chat_recommendations": "🎯 आपकी रुचियों के आधार पर, ये देखें:\n{list}", "chat_payment_status": "💳 {title} के लिए भुगतान: {status}", "chat_help": "मैं इनके बारे में जानकारी दे सकता हूँ:\n• इवेंट की तारीख, स्थान, शुल्क\n• आपके पंजीकरण\n• भुगतान स्थिति\n• इवेंट सुझाव\n\nउदाहरण: 'टेक फेस्ट कब है?' या 'मुफ्त कार्यक्रम दिखाएं'" },
+            // BENGALI, TELUGU, MARATHI, GUJARATI, KANNADA, MALAYALAM, PUNJABI - for brevity, we'll set them to Tamil values for demo
+            bn: {},
+            te: {},
+            mr: {},
+            gu: {},
+            kn: {},
+            ml: {},
+            pa: {}
         };
-        // ----- Placeholder for other languages â€“ In full version, all 10 languages are included.
-        // ----- For operational demo, we copy Hindi values to other languages to avoid missing keys.
-        const langCodes = ['bn','te','ta','mr','gu','kn','ml','pa'];
-        langCodes.forEach(code => {
-            translations[code] = {
-                ...translations['en'],
-                ...(translations[code] || {})
-            };
-        });
-
-        // Tamil overrides (clean UTF-8 values)
-        Object.assign(translations['ta'], {
-            "Dashboard": "à®Ÿà®¾à®·à¯à®ªà¯‹à®°à¯à®Ÿà¯",
-            "All Events": "à®…à®©à¯ˆà®¤à¯à®¤à¯ à®¨à®¿à®•à®´à¯à®µà¯à®•à®³à¯",
-            "Create Event": "à®¨à®¿à®•à®´à¯à®µà¯ à®‰à®°à¯à®µà®¾à®•à¯à®•à¯",
-            "My Events": "à®Žà®©à¯ à®¨à®¿à®•à®´à¯à®µà¯à®•à®³à¯",
-            "Analytics": "à®ªà®•à¯à®ªà¯à®ªà®¾à®¯à¯à®µà¯",
-            "Upcoming": "à®µà®°à®µà®¿à®°à¯à®•à¯à®•à¯à®®à¯",
-            "Ongoing": "à®¨à®Ÿà¯ˆà®ªà¯†à®±à¯à®•à®¿à®±à®¤à¯",
-            "My Regs": "à®Žà®©à¯ à®ªà®¤à®¿à®µà¯à®•à®³à¯",
-            "Organized": "à®à®±à¯à®ªà®¾à®Ÿà¯ à®šà¯†à®¯à¯à®¤à®µà¯ˆ",
-            "Trending Events": "à®ªà®¿à®°à®ªà®² à®¨à®¿à®•à®´à¯à®µà¯à®•à®³à¯",
-            "Create New Event": "à®ªà¯à®¤à®¿à®¯ à®¨à®¿à®•à®´à¯à®µà¯ à®‰à®°à¯à®µà®¾à®•à¯à®•à¯",
-            "Event Title": "à®¨à®¿à®•à®´à¯à®µà¯ à®¤à®²à¯ˆà®ªà¯à®ªà¯",
-            "Category": "à®µà®•à¯ˆ",
-            "Event Fee": "à®•à®Ÿà¯à®Ÿà®£à®®à¯",
-            "Date": "à®¤à¯‡à®¤à®¿",
-            "Time": "à®¨à¯‡à®°à®®à¯",
-            "Venue": "à®‡à®Ÿà®®à¯",
-            "Description": "à®µà®¿à®³à®•à¯à®•à®®à¯",
-            "Capacity": "à®¤à®¿à®±à®©à¯",
-            "Register Free": "à®‡à®²à®µà®š à®ªà®¤à®¿à®µà¯",
-            "Register": "à®ªà®¤à®¿à®µà¯ à®šà¯†à®¯à¯",
-            "Registered": "à®ªà®¤à®¿à®µà¯ à®šà¯†à®¯à¯à®¯à®ªà¯à®ªà®Ÿà¯à®Ÿà®¤à¯",
-            "Pay Now": "à®‡à®ªà¯à®ªà¯‹à®¤à¯ à®šà¯†à®²à¯à®¤à¯à®¤à¯",
-            "View Participants": "à®ªà®™à¯à®•à¯‡à®±à¯à®ªà®¾à®³à®°à¯à®•à®³à¯ˆà®ªà¯ à®ªà®¾à®°à¯",
-            "Complete Payment": "à®•à®Ÿà¯à®Ÿà®£à®¤à¯à®¤à¯ˆ à®¨à®¿à®±à¯ˆà®µà¯ à®šà¯†à®¯à¯",
-            "Amount": "à®¤à¯Šà®•à¯ˆ",
-            "Bank Transfer": "à®µà®™à¯à®•à®¿ à®ªà®°à®¿à®®à®¾à®±à¯à®±à®®à¯",
-            "Upload Payment Proof": "à®•à®Ÿà¯à®Ÿà®£ à®†à®¤à®¾à®°à®¤à¯à®¤à¯ˆ à®ªà®¤à®¿à®µà¯‡à®±à¯à®±à¯",
-            "Submit Payment Proof": "à®•à®Ÿà¯à®Ÿà®£ à®†à®¤à®¾à®°à®¤à¯à®¤à¯ˆ à®šà®®à®°à¯à®ªà¯à®ªà®¿",
-            "Event Participants": "à®¨à®¿à®•à®´à¯à®µà¯ à®ªà®™à¯à®•à¯‡à®±à¯à®ªà®¾à®³à®°à¯à®•à®³à¯",
-            "Event Details": "à®¨à®¿à®•à®´à¯à®µà¯ à®µà®¿à®µà®°à®™à¯à®•à®³à¯",
-            "Exit": "à®µà¯†à®³à®¿à®¯à¯‡à®±à¯",
-            "Continue": "à®¤à¯Šà®Ÿà®°à®µà¯à®®à¯",
-            "Organizer": "à®’à®°à¯à®™à¯à®•à®¿à®£à¯ˆà®ªà¯à®ªà®¾à®³à®°à¯",
-            "Participant": "à®ªà®™à¯à®•à¯‡à®±à¯à®ªà®¾à®³à®°à¯",
-            "organizer": "à®’à®°à¯à®™à¯à®•à®¿à®£à¯ˆà®ªà¯à®ªà®¾à®³à®°à¯",
-            "participant": "à®ªà®™à¯à®•à¯‡à®±à¯à®ªà®¾à®³à®°à¯",
-            "manage_create": "à®¨à®¿à®°à¯à®µà®•à®¿à®¤à¯à®¤à¯ à®‰à®°à¯à®µà®¾à®•à¯à®•à¯à®™à¯à®•à®³à¯",
-            "join_events": "à®¨à®¿à®•à®´à¯à®µà¯à®•à®³à®¿à®²à¯ à®šà¯‡à®°à¯à®™à¯à®•à®³à¯",
-            "fullname_club": "à®®à¯à®´à¯à®ªà¯ à®ªà¯†à®¯à®°à¯ / à®•à®¿à®³à®ªà¯",
-            "Password": "à®•à®Ÿà®µà¯à®šà¯à®šà¯Šà®²à¯",
-            "welcome": "à®µà®°à®µà¯‡à®±à¯à®ªà¯",
-            "event_title_placeholder": "à®¨à®¿à®•à®´à¯à®µà¯ à®¤à®²à¯ˆà®ªà¯à®ªà¯ *",
-            "fee_placeholder": "à®•à®Ÿà¯à®Ÿà®£à®®à¯ (â‚¹)",
-            "venue_placeholder": "à®‡à®Ÿà®®à¯",
-            "description_placeholder": "à®µà®¿à®³à®•à¯à®•à®®à¯",
-            "capacity_placeholder": "à®¤à®¿à®±à®©à¯",
-            "fullname_placeholder": "à®®à¯à®´à¯à®ªà¯ à®ªà¯†à®¯à®°à¯",
-            "dept_placeholder": "à®¤à¯à®±à¯ˆ",
-            "class_placeholder": "à®µà®•à¯à®ªà¯à®ªà¯",
-            "college_placeholder": "à®•à®²à¯à®²à¯‚à®°à®¿",
-            "roll_placeholder": "à®°à¯‹à®²à¯ à®Žà®£à¯",
-            "chat_placeholder": "à®‰à®™à¯à®•à®³à¯ à®•à¯‡à®³à¯à®µà®¿à®¯à¯ˆ à®‰à®³à¯à®³à®¿à®Ÿà¯à®™à¯à®•à®³à¯...",
-            "AI Event Assistant": "AI à®¨à®¿à®•à®´à¯à®µà¯ à®‰à®¤à®µà®¿à®¯à®¾à®³à®°à¯",
-            "Invalid credentials": "à®¤à®µà®±à®¾à®© à®µà®¿à®µà®°à®™à¯à®•à®³à¯",
-            "Welcome": "à®µà®°à®µà¯‡à®±à¯à®•à®¿à®±à¯‹à®®à¯",
-            "Logged out": "à®µà¯†à®³à®¿à®¯à¯‡à®±à®¿à®µà®¿à®Ÿà¯à®Ÿà¯€à®°à¯à®•à®³à¯"
+        
+        // Copy Tamil translations to other languages for demo completeness
+        const langCodes = ['bn','te','mr','gu','kn','ml','pa'];
+        langCodes.forEach(code => { 
+            translations[code] = JSON.parse(JSON.stringify(translations['ta'])); 
         });
         
-        // ---------- LANGUAGE FUNCTIONS â€“ FIXED TO HANDLE ALL LANGUAGES ----------
+        // ---------- LANGUAGE FUNCTIONS – TAMIL AS DEFAULT ----------
         function changeLanguage(lang) {
-            if (!translations[lang]) { lang = 'en'; }
+            if (!translations[lang]) { lang = 'ta'; }
             appState.currentLanguage = lang;
             document.documentElement.lang = lang;
             const select = document.getElementById('language-select');
@@ -1415,43 +1503,30 @@
             
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
-                el.textContent = translations[lang]?.[key] || translations['en'][key] || key;
+                el.textContent = translations[lang]?.[key] || translations['ta'][key] || translations['en'][key] || key;
             });
             document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
                 const key = el.getAttribute('data-i18n-placeholder');
-                el.placeholder = translations[lang]?.[key] || translations['en'][key] || key;
+                el.placeholder = translations[lang]?.[key] || translations['ta'][key] || translations['en'][key] || key;
             });
             document.querySelectorAll('option[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
-                el.textContent = translations[lang]?.[key] || translations['en'][key] || key;
+                el.textContent = translations[lang]?.[key] || translations['ta'][key] || translations['en'][key] || key;
             });
             const li = document.getElementById('current-language-indicator');
-            if (li) {
-                const langNames = {
-                    en: 'English',
-                    hi: 'Hindi',
-                    bn: 'Bengali',
-                    te: 'Telugu',
-                    ta: 'Tamil',
-                    mr: 'Marathi',
-                    gu: 'Gujarati',
-                    kn: 'Kannada',
-                    ml: 'Malayalam',
-                    pa: 'Punjabi'
-                };
-                li.textContent = langNames[lang] || 'English';
+            if(li) {
+                const langNames = {'ta':'🇮🇳 தமிழ்','en':'🌐 English','hi':'🇮🇳 हिन्दी','bn':'🇧🇩 বাংলা','te':'🇮🇳 తెలుగు','mr':'🇮🇳 मराठी','gu':'🇮🇳 ગુજરાતી','kn':'🇮🇳 ಕನ್ನಡ','ml':'🇮🇳 മലയാളം','pa':'🇮🇳 ਪੰਜਾਬੀ'};
+                li.textContent = langNames[lang] || '🇮🇳 தமிழ்';
             }
             updateUserDisplay();
             refreshAllViews();
-            if (appState.currentUser) {
-                const welcomeMsg = translations[lang]?.['Welcome'] || translations['en']['Welcome'];
-                showNotification(`${welcomeMsg} ${appState.currentUser.name}`, 'success');
-            }
+            const welcomeMsg = translations[lang]?.['Welcome'] || translations['ta']['Welcome'] || 'Welcome';
+            showNotification(`${welcomeMsg} ${appState.currentUser?.name || ''}`, 'success');
         }
 
         function translateText(key) { 
-            let l = appState.currentLanguage || 'en'; 
-            return translations[l]?.[key] || translations['en'][key] || key; 
+            let l = appState.currentLanguage || 'ta'; 
+            return translations[l]?.[key] || translations['ta'][key] || translations['en'][key] || key; 
         }
 
         // ---------- CHATBOT AI ASSISTANT ----------
@@ -1489,47 +1564,47 @@
             }
 
             function processChatQuery(query) {
-                const lang = appState.currentLanguage || 'en';
+                const lang = appState.currentLanguage || 'ta';
                 const lowerQuery = query.toLowerCase();
-                const t = (key) => translations[lang]?.[key] || translations['en'][key] || key;
-                if (!appState.currentUser) return "Please login first to ask about events. | à¤•à¥ƒà¤ªà¤¯à¤¾ à¤ªà¤¹à¤²à¥‡ à¤²à¥‰à¤—à¤¿à¤¨ à¤•à¤°à¥‡à¤‚à¥¤";
+                const t = (key) => translations[lang]?.[key] || translations['ta'][key] || translations['en'][key] || key;
+                if (!appState.currentUser) return "Please login first to ask about events. | தயவுசெய்து முதலில் உள்நுழையவும்.";
                 if (appState.currentUser.role !== 'participant') return "Chat assistant is primarily for participants. Please use the dashboard to manage events.";
                 
-                if (lowerQuery.includes('hi') || lowerQuery.includes('hello') || lowerQuery.includes('hey')) return t('chat_greeting');
-                if (lowerQuery.includes('help')) return t('chat_help');
-                if (lowerQuery.includes('my registration') || lowerQuery.includes('my events')) {
+                if (lowerQuery.includes('hi') || lowerQuery.includes('hello') || lowerQuery.includes('hey') || lowerQuery.includes('வணக்கம்')) return t('chat_greeting');
+                if (lowerQuery.includes('help') || lowerQuery.includes('உதவி')) return t('chat_help');
+                if (lowerQuery.includes('my registration') || lowerQuery.includes('my events') || lowerQuery.includes('எனது பதிவு')) {
                     const myRegs = appState.registrations.filter(r => r.userId === appState.currentUser.id);
-                    if (myRegs.length === 0) return "ðŸ“‹ You have no registrations yet. Browse events and register!";
+                    if (myRegs.length === 0) return "📋 You have no registrations yet. Browse events and register! | 📋 உங்களுக்கு இன்னும் பதிவுகள் இல்லை. நிகழ்வுகளை உலாவி பதிவு செய்யுங்கள்!";
                     let list = '';
-                    myRegs.slice(0,5).forEach(reg => { const event = appState.events.find(e => e.id === reg.eventId); if(event) list += `â€¢ ${translations[lang]?.[event.title_key] || translations['en'][event.title_key]} - ${reg.paymentStatus}\n`; });
+                    myRegs.slice(0,5).forEach(reg => { const event = appState.events.find(e => e.id === reg.eventId); if(event) list += `• ${translations[lang]?.[event.title_key] || translations['ta'][event.title_key] || translations['en'][event.title_key]} - ${reg.paymentStatus}\n`; });
                     return t('chat_my_registrations').replace('{count}', myRegs.length).replace('{list}', list);
                 }
-                if (lowerQuery.includes('payment') || lowerQuery.includes('paid') || lowerQuery.includes('pending')) {
+                if (lowerQuery.includes('payment') || lowerQuery.includes('paid') || lowerQuery.includes('pending') || lowerQuery.includes('கட்டணம்')) {
                     const myRegs = appState.registrations.filter(r => r.userId === appState.currentUser.id);
                     let paymentInfo = '';
-                    myRegs.forEach(reg => { const event = appState.events.find(e => e.id === reg.eventId); if(event && event.price>0) { const title = translations[lang]?.[event.title_key] || translations['en'][event.title_key]; paymentInfo += t('chat_payment_status').replace('{title}', title).replace('{status}', reg.paymentStatus) + '\n'; } });
-                    return paymentInfo || "No paid event registrations found.";
+                    myRegs.forEach(reg => { const event = appState.events.find(e => e.id === reg.eventId); if(event && event.price>0) { const title = translations[lang]?.[event.title_key] || translations['ta'][event.title_key] || translations['en'][event.title_key]; paymentInfo += t('chat_payment_status').replace('{title}', title).replace('{status}', reg.paymentStatus) + '\n'; } });
+                    return paymentInfo || "No paid event registrations found. | கட்டண நிகழ்வு பதிவுகள் எதுவும் கிடைக்கவில்லை.";
                 }
-                if (lowerQuery.includes('free')) {
+                if (lowerQuery.includes('free') || lowerQuery.includes('இலவச')) {
                     const freeEvents = appState.events.filter(e => e.price === 0);
-                    if (freeEvents.length===0) return "No free events available.";
-                    let list = ''; freeEvents.slice(0,5).forEach(e => { const title = translations[lang]?.[e.title_key] || translations['en'][e.title_key]; list += `â€¢ ${title} - ${e.date}\n`; });
-                    return `ðŸŽŸï¸ Free events available:\n${list}`;
+                    if (freeEvents.length===0) return "No free events available. | இலவச நிகழ்வுகள் எதுவும் கிடைக்கவில்லை.";
+                    let list = ''; freeEvents.slice(0,5).forEach(e => { const title = translations[lang]?.[e.title_key] || translations['ta'][e.title_key] || translations['en'][e.title_key]; list += `• ${title} - ${e.date}\n`; });
+                    return `🎟️ Free events available:\n${list} | 🎟️ இலவச நிகழ்வுகள்:\n${list}`;
                 }
                 for (let event of appState.events) {
-                    const title = translations['en'][event.title_key].toLowerCase();
+                    const title = translations['en'][event.title_key]?.toLowerCase() || event.title_key?.toLowerCase() || '';
                     if (lowerQuery.includes(title)) {
                         const priceDesc = event.price === 0 ? t('chat_free') : t('chat_price').replace('{price}', event.price);
-                        const eventTitle = translations[lang]?.[event.title_key] || translations['en'][event.title_key];
+                        const eventTitle = translations[lang]?.[event.title_key] || translations['ta'][event.title_key] || translations['en'][event.title_key];
                         return t('chat_event_info').replace('{title}', eventTitle).replace('{date}', event.date).replace('{time}', event.time).replace('{venue}', event.venue).replace('{price_desc}', priceDesc).replace('{capacity}', event.capacity).replace('{registered}', event.registeredCount || 0);
                     }
                 }
-                if (lowerQuery.includes('recommend') || lowerQuery.includes('suggest') || lowerQuery.includes('popular')) {
+                if (lowerQuery.includes('recommend') || lowerQuery.includes('suggest') || lowerQuery.includes('popular') || lowerQuery.includes('பரிந்துரை')) {
                     const trending = [...appState.events].sort((a,b) => b.registeredCount - a.registeredCount).slice(0,3);
-                    let list = ''; trending.forEach(e => { const title = translations[lang]?.[e.title_key] || translations['en'][e.title_key]; list += `â€¢ ${title} - ${e.registeredCount} registered\n`; });
+                    let list = ''; trending.forEach(e => { const title = translations[lang]?.[e.title_key] || translations['ta'][e.title_key] || translations['en'][e.title_key]; list += `• ${title} - ${e.registeredCount} registered\n`; });
                     return t('chat_recommendations').replace('{list}', list);
                 }
-                return "I'm not sure about that. Try asking about specific events, your registrations, or free events.";
+                return "I'm not sure about that. Try asking about specific events, your registrations, or free events. | இது பற்றி எனக்கு உறுதியாக தெரியவில்லை. குறிப்பிட்ட நிகழ்வுகள், உங்கள் பதிவுகள் அல்லது இலவச நிகழ்வுகள் பற்றி கேளுங்கள்.";
             }
         }
 
@@ -1587,7 +1662,6 @@
             refreshAllViews(); 
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); 
             document.getElementById('app-container').classList.add('active'); 
-            document.body.classList.add('app-active');
             showNotification(translateText('Welcome') + ' ' + u.name + '!', 'success'); 
         }
 
@@ -1596,7 +1670,6 @@
             localStorage.removeItem('currentUser'); 
             document.getElementById('app-container').classList.remove('active'); 
             document.getElementById('role-select-page').classList.add('active'); 
-            document.body.classList.remove('app-active');
             showNotification(translateText('Logged out') || 'Logged out', 'info'); 
         }
 
@@ -1611,7 +1684,7 @@
             document.getElementById('analytics-link').style.display = isOrg ? 'flex' : 'none'; 
         }
 
-        // ---------- RENDER â€“ FULLY TRANSLATED EVENT CARDS ----------
+        // ---------- RENDER – FULLY TRANSLATED EVENT CARDS ----------
         function refreshAllViews(){ 
             renderDashboard(); 
             renderAllEvents(); 
@@ -1644,9 +1717,9 @@
         }
 
         function renderEventCard(event){
-            const lang = appState.currentLanguage || 'en';
-            const title = translations[lang]?.[event.title_key] || translations['en'][event.title_key] || event.title_key;
-            const category = translations[lang]?.[event.category_key] || translations['en'][event.category_key] || event.category_key;
+            const lang = appState.currentLanguage || 'ta';
+            const title = translations[lang]?.[event.title_key] || translations['ta'][event.title_key] || translations['en'][event.title_key] || event.title_key;
+            const category = translations[lang]?.[event.category_key] || translations['ta'][event.category_key] || translations['en'][event.category_key] || event.category_key;
             const isReg = appState.registrations.some(r => r.userId === appState.currentUser?.id && r.eventId === event.id);
             const isOrg = event.organizerId === appState.currentUser?.id;
             let action = '';
@@ -1668,7 +1741,7 @@
             } else { 
                 if(event.price > 0) {
                     action = `<button class="btn-soft" onclick="event.stopPropagation(); window.registerForEvent(${event.id})">
-                                <i class="fas fa-rupee-sign"></i> ${translateText('Register')} (â‚¹${event.price})
+                                <i class="fas fa-rupee-sign"></i> ${translateText('Register')} (₹${event.price})
                             </button>`;
                 } else {
                     action = `<button class="btn-soft" onclick="event.stopPropagation(); window.registerForEvent(${event.id})">
@@ -1693,7 +1766,7 @@
                     </div>`;
         }
 
-        // ---------- CREATE EVENT â€“ IMMEDIATE VISIBILITY ----------
+        // ---------- CREATE EVENT – IMMEDIATE VISIBILITY ----------
         function setupEventForm(){ 
             document.getElementById('event-form').addEventListener('submit', function(e){ 
                 e.preventDefault(); 
@@ -1728,7 +1801,7 @@
                 document.getElementById('event-time').value = '14:00'; 
                 document.getElementById('event-capacity').value = '100';
                 refreshAllViews(); renderAllEvents();
-                showNotification(`âœ¨ "${title}" ${translateText('created and visible to all students!')}`, 'success'); 
+                showNotification(`✨ "${title}" ${translateText('created and visible to all students!')}`, 'success'); 
             }); 
         }
 
@@ -1764,13 +1837,13 @@
             if(e.capacity <= e.registeredCount){ showNotification(translateText('Event is full'), 'error'); return; }
             if(e.price === 0) {
                 let reg = { id: appState.registrations.length + 1, userId: appState.currentUser.id, eventId: id, registeredAt: formatDate(new Date()), paymentStatus: 'free', paymentMethod: null, paymentProof: null };
-                appState.registrations.push(reg); e.registeredCount = (e.registeredCount || 0) + 1; refreshAllViews(); showNotification(`âœ… ${translateText('Registered for')} ${translations[appState.currentLanguage]?.[e.title_key] || translations['en'][e.title_key]}`, 'success');
+                appState.registrations.push(reg); e.registeredCount = (e.registeredCount || 0) + 1; refreshAllViews(); showNotification(`✅ ${translateText('Registered for')} ${translations[appState.currentLanguage]?.[e.title_key] || translations['ta'][e.title_key] || translations['en'][e.title_key]}`, 'success');
             } else { showPaymentModal(e); }
         };
 
         function showPaymentModal(e) {
             appState.currentPaymentEvent = e;
-            document.getElementById('payment-event-name').textContent = translations[appState.currentLanguage]?.[e.title_key] || translations['en'][e.title_key];
+            document.getElementById('payment-event-name').textContent = translations[appState.currentLanguage]?.[e.title_key] || translations['ta'][e.title_key] || translations['en'][e.title_key];
             document.getElementById('payment-amount').textContent = e.price;
             const fileInput = document.getElementById('payment-proof'); const proofNameDiv = document.getElementById('payment-proof-name'); const submitBtn = document.getElementById('submit-payment-btn');
             fileInput.value = ''; appState.currentPaymentFile = null; proofNameDiv.style.display = 'none'; submitBtn.disabled = true;
@@ -1779,13 +1852,13 @@
         }
         window.completePayment = function(id){ let e = appState.events.find(ev => ev.id === id); if(e) showPaymentModal(e); };
 
-        // ---------- PARTICIPANTS WITH PAYMENT PROOF â€“ FULLY TRANSLATED ----------
+        // ---------- PARTICIPANTS WITH PAYMENT PROOF – FULLY TRANSLATED ----------
         window.showParticipants = function(eventId) {
             const event = appState.events.find(e => e.id === eventId);
             const regs = appState.registrations.filter(r => r.eventId === eventId);
             const sortedRegs = [...regs].sort((a,b) => (appState.users.find(u => u.id === a.userId)?.name || '').localeCompare(appState.users.find(u => u.id === b.userId)?.name || ''));
             let html = `<div class="participant-export-bar"><button class="btn-excel" id="export-participants-excel" data-eventid="${eventId}"><i class="fas fa-file-excel"></i> ${translateText('Export All Participants')} (${regs.length})</button></div>`;
-            html += `<h3 style="color: #0a3847; margin-bottom: 0.5rem;">${translations[appState.currentLanguage]?.[event.title_key] || translations['en'][event.title_key]}</h3>`;
+            html += `<h3 style="color: #0a3847; margin-bottom: 0.5rem;">${translations[appState.currentLanguage]?.[event.title_key] || translations['ta'][event.title_key] || translations['en'][event.title_key]}</h3>`;
             html += `<p style="margin-bottom: 1.5rem; font-size: 1.1rem;">${translateText('Total registrations')}: <strong style="background: #0a3847; color: white; padding: 0.2rem 1rem; border-radius: 50px;">${regs.length}</strong></p>`;
             html += `<div class="participants-full-list">`;
             sortedRegs.forEach((reg)=>{
@@ -1805,7 +1878,7 @@
                                         <span><i class="fas fa-university"></i> ${user.college || ''}</span>
                                         <span><i class="fas fa-calendar-check"></i> ${translateText('Reg')}: ${reg.registeredAt}</span>
                                     </div>
-                                    ${reg.paymentProof ? `<div class="payment-proof-thumb"><i class="fas fa-file-image" style="color: #0a3847; font-size: 1.2rem;"></i><a href="#" class="proof-link" onclick="alert('${translateText('Payment Proof')}: ${reg.paymentProof}\\nðŸ“· ${translateText('Image would open here')}'); return false;"><i class="fas fa-download"></i> ${translateText('View Payment Proof')}</a><span style="font-size: 0.8rem; color: #64748b; margin-left: auto;">${reg.paymentProof}</span></div>` : ''}
+                                    ${reg.paymentProof ? `<div class="payment-proof-thumb"><i class="fas fa-file-image" style="color: #0a3847; font-size: 1.2rem;"></i><a href="#" class="proof-link" onclick="alert('${translateText('Payment Proof')}: ${reg.paymentProof}\\n📷 ${translateText('Image would open here')}'); return false;"><i class="fas fa-download"></i> ${translateText('View Payment Proof')}</a><span style="font-size: 0.8rem; color: #64748b; margin-left: auto;">${reg.paymentProof}</span></div>` : ''}
                                 </div>
                                 <div style="min-width: 120px; text-align: right;">
                                     <span style="background: ${badgeColor}; color: white; padding: 0.3rem 1.2rem; border-radius: 30px; font-weight: 600; text-transform: uppercase; font-size: 0.75rem; display: inline-block;">${statusText}</span>
@@ -1828,17 +1901,17 @@
             const data = regs.map(reg=>{
                 const user = appState.users.find(u => u.id === reg.userId) || {name:'Unknown', studentId:'', email:'', dept:'', college:'', roll:'', class:''};
                 return {
-                    [translateText('Event Name')]: translations[appState.currentLanguage]?.[event.title_key] || translations['en'][event.title_key],
+                    [translateText('Event Name')]: translations[appState.currentLanguage]?.[event.title_key] || translations['ta'][event.title_key] || translations['en'][event.title_key],
                     [translateText('Participant Name')]: user.name,
-                    [translateText('Student ID / Roll No')]: user.studentId || user.roll || 'â€”',
-                    [translateText('Email')]: user.email || 'â€”',
-                    [translateText('Department')]: user.dept || 'â€”',
-                    [translateText('Class')]: user.class || 'â€”',
-                    [translateText('College')]: user.college || 'â€”',
+                    [translateText('Student ID / Roll No')]: user.studentId || user.roll || '—',
+                    [translateText('Email')]: user.email || '—',
+                    [translateText('Department')]: user.dept || '—',
+                    [translateText('Class')]: user.class || '—',
+                    [translateText('College')]: user.college || '—',
                     [translateText('Registration Date')]: reg.registeredAt,
                     [translateText('Payment Status')]: reg.paymentStatus === 'paid' ? translateText('Paid') : (reg.paymentStatus === 'pending' ? translateText('Pending') : translateText('Free')),
-                    [translateText('Payment Method')]: reg.paymentMethod || 'â€”',
-                    [translateText('Payment Proof')]: reg.paymentProof || 'â€”',
+                    [translateText('Payment Method')]: reg.paymentMethod || '—',
+                    [translateText('Payment Proof')]: reg.paymentProof || '—',
                     [translateText('Registration ID')]: reg.id
                 };
             });
@@ -1848,23 +1921,23 @@
             showNotification(`${regs.length} ${translateText('participants exported to Excel')}`, 'success');
         }
 
-        // ---------- EVENT DETAIL â€“ FULLY TRANSLATED ----------
+        // ---------- EVENT DETAIL – FULLY TRANSLATED ----------
         window.showEventDetail = function(id) { 
             let e = appState.events.find(ev => ev.id === id); if(!e) return; 
-            appState.currentDetailEvent = e; let lang = appState.currentLanguage || 'en'; 
-            let title = translations[lang]?.[e.title_key] || translations['en'][e.title_key];
-            let description = translations[lang]?.[e.description_key] || translations['en'][e.description_key];
-            let category = translations[lang]?.[e.category_key] || translations['en'][e.category_key];
+            appState.currentDetailEvent = e; let lang = appState.currentLanguage || 'ta'; 
+            let title = translations[lang]?.[e.title_key] || translations['ta'][e.title_key] || translations['en'][e.title_key];
+            let description = translations[lang]?.[e.description_key] || translations['ta'][e.description_key] || translations['en'][e.description_key];
+            let category = translations[lang]?.[e.category_key] || translations['ta'][e.category_key] || translations['en'][e.category_key];
             document.getElementById('detail-title').textContent = title; 
             document.getElementById('detail-description').textContent = description; 
-            let meta = `<span><i class="fas fa-calendar"></i> ${e.date}</span> <span><i class="fas fa-clock"></i> ${e.time}</span> <span><i class="fas fa-map-marker-alt"></i> ${e.venue}</span> <span><i class="fas fa-tag"></i> ${category}</span> <span><i class="fas fa-users"></i> ${e.registeredCount||0}/${e.capacity}</span> ${e.price > 0 ? `<span><i class="fas fa-rupee-sign"></i> â‚¹${e.price}</span>` : '<span><i class="fas fa-gift"></i> ' + translateText('Free') + '</span>'}`;
+            let meta = `<span><i class="fas fa-calendar"></i> ${e.date}</span> <span><i class="fas fa-clock"></i> ${e.time}</span> <span><i class="fas fa-map-marker-alt"></i> ${e.venue}</span> <span><i class="fas fa-tag"></i> ${category}</span> <span><i class="fas fa-users"></i> ${e.registeredCount||0}/${e.capacity}</span> ${e.price > 0 ? `<span><i class="fas fa-rupee-sign"></i> ₹${e.price}</span>` : '<span><i class="fas fa-gift"></i> ' + translateText('Free') + '</span>'}`;
             document.getElementById('detail-meta').innerHTML = meta; 
             let isReg = appState.registrations.some(r => r.userId === appState.currentUser?.id && r.eventId === e.id); 
             let isOrg = e.organizerId === appState.currentUser?.id; 
             let act = ''; 
             if(isOrg) { act = `<button class="btn-soft" onclick="window.showParticipants(${e.id})"><i class="fas fa-users"></i> ${translateText('View Participants')} (${e.registeredCount||0})</button>`; } 
-            else if(isReg){ let r = appState.registrations.find(r => r.userId === appState.currentUser?.id && r.eventId === e.id); if(r?.paymentStatus === 'pending') { act = `<button class="btn-soft" onclick="window.completePayment(${e.id})"><i class="fas fa-upload"></i> ${translateText('Upload Payment Proof')}</button>`; } else { act = `<button class="btn-success-glass" disabled><i class="fas fa-check"></i> ${translateText('Registered')} âœ“</button>`; } } 
-            else { if(e.price > 0) { act = `<button class="btn-soft" onclick="window.registerForEvent(${e.id})"><i class="fas fa-rupee-sign"></i> ${translateText('Register')} (â‚¹${e.price})</button>`; } else { act = `<button class="btn-soft" onclick="window.registerForEvent(${e.id})"><i class="fas fa-user-plus"></i> ${translateText('Register Free')}</button>`; } } 
+            else if(isReg){ let r = appState.registrations.find(r => r.userId === appState.currentUser?.id && r.eventId === e.id); if(r?.paymentStatus === 'pending') { act = `<button class="btn-soft" onclick="window.completePayment(${e.id})"><i class="fas fa-upload"></i> ${translateText('Upload Payment Proof')}</button>`; } else { act = `<button class="btn-success-glass" disabled><i class="fas fa-check"></i> ${translateText('Registered')} ✓</button>`; } } 
+            else { if(e.price > 0) { act = `<button class="btn-soft" onclick="window.registerForEvent(${e.id})"><i class="fas fa-rupee-sign"></i> ${translateText('Register')} (₹${e.price})</button>`; } else { act = `<button class="btn-soft" onclick="window.registerForEvent(${e.id})"><i class="fas fa-user-plus"></i> ${translateText('Register Free')}</button>`; } } 
             document.getElementById('detail-action').innerHTML = act; 
             document.getElementById('event-detail-modal').style.display = 'flex'; 
         };
@@ -1885,14 +1958,17 @@
                 });
             });
             setupEventForm(); setupPaymentUpload(); setupChatbot();
-            document.getElementById('logout-btn').addEventListener('click', logoutUser);
+            
+            // Setup bottom logout button
+            document.getElementById('logout-bottom-btn').addEventListener('click', logoutUser);
+            
             document.getElementById('export-data-btn')?.addEventListener('click', function(){ 
                 if(typeof XLSX !== 'undefined'){ 
                     let wb = XLSX.utils.book_new(); 
                     let eventsData = appState.events.map(e => ({
-                        [translateText('Event Title')]: translations[appState.currentLanguage]?.[e.title_key] || translations['en'][e.title_key],
+                        [translateText('Event Title')]: translations[appState.currentLanguage]?.[e.title_key] || translations['ta'][e.title_key] || translations['en'][e.title_key],
                         [translateText('Date')]: e.date, [translateText('Time')]: e.time, [translateText('Venue')]: e.venue,
-                        [translateText('Category')]: translations[appState.currentLanguage]?.[e.category_key] || translations['en'][e.category_key],
+                        [translateText('Category')]: translations[appState.currentLanguage]?.[e.category_key] || translations['ta'][e.category_key] || translations['en'][e.category_key],
                         [translateText('Capacity')]: e.capacity, [translateText('Registered')]: e.registeredCount, [translateText('Price')]: e.price, [translateText('Organizer')]: e.organizerName
                     }));
                     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(eventsData), 'Events'); 
@@ -1923,7 +1999,8 @@
         document.addEventListener('DOMContentLoaded', function(){
             setupLoginUI(); setupApp();
             const langSelect = document.getElementById('language-select');
-            if (langSelect) langSelect.value = 'en';
+            if (langSelect) langSelect.value = 'ta'; // TAMIL COMPULSORY - DEFAULT
+            
             let saved = localStorage.getItem('currentUser'); 
             if(saved){ 
                 appState.currentUser = JSON.parse(saved); 
@@ -1932,9 +2009,6 @@
                 refreshAllViews(); 
                 document.getElementById('app-container').classList.add('active'); 
                 document.getElementById('role-select-page').classList.remove('active'); 
-                document.body.classList.add('app-active');
-            } else {
-                document.body.classList.remove('app-active');
             }
             window.registerForEvent = window.registerForEvent; 
             window.showParticipants = window.showParticipants; 
@@ -1942,7 +2016,9 @@
             window.changeLanguage = changeLanguage; 
             window.showEventDetail = window.showEventDetail; 
             window.exportParticipantsToExcel = exportParticipantsToExcel;
-            changeLanguage('en');
+            
+            // Set Tamil as default language
+            changeLanguage('ta');
         });
     </script>
 </body>
