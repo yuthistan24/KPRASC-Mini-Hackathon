@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 ?>
 <!DOCTYPE html>
@@ -8,6 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Club Hub - KEC Events Manager</title>
     <link rel="icon" type="image/x-icon" href="./images/clubhub-logo.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -812,6 +815,243 @@
             display: none;
         }
 
+        :root {
+            --bg: #eef2f7;
+            --panel: #ffffff;
+            --panel-soft: #f7f9fc;
+            --text: #10243a;
+            --text-muted: #4b6079;
+            --primary: #0f5f93;
+            --primary-strong: #0b4b75;
+            --accent: #db4e3f;
+            --ok: #2b8f5f;
+            --radius-lg: 18px;
+            --radius-md: 12px;
+            --shadow-lg: 0 16px 40px rgba(16, 36, 58, 0.14);
+            --shadow-md: 0 10px 24px rgba(16, 36, 58, 0.12);
+            --border-soft: 1px solid #d9e2ec;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', 'Segoe UI', sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at 8% 10%, rgba(15,95,147,0.18), transparent 38%),
+                radial-gradient(circle at 90% 90%, rgba(219,78,63,0.14), transparent 36%),
+                linear-gradient(180deg, #f5f8fc 0%, #eaf0f6 100%);
+            padding: 28px 20px;
+        }
+
+        .container {
+            max-width: 1240px;
+        }
+
+        .welcome-screen {
+            background: rgba(255, 255, 255, 0.86);
+            border: var(--border-soft);
+            border-radius: 24px;
+            box-shadow: var(--shadow-lg);
+            padding: 40px 28px 34px;
+            backdrop-filter: blur(6px);
+        }
+
+        .welcome-screen h1 {
+            color: var(--text);
+            font-size: 2.7em;
+            text-shadow: none;
+            margin-bottom: 10px;
+        }
+
+        .welcome-screen p {
+            color: var(--text-muted);
+            margin-bottom: 26px;
+        }
+
+        .club-hub-logo {
+            width: 148px;
+            margin-bottom: 16px;
+            border-radius: 24px;
+            box-shadow: 0 8px 24px rgba(16, 36, 58, 0.2);
+        }
+
+        .welcome-images {
+            gap: 18px;
+        }
+
+        .welcome-images img {
+            height: 170px;
+            border-radius: 14px;
+            border: none;
+            box-shadow: var(--shadow-md);
+        }
+
+        .welcome-images figcaption,
+        .welcome-upcoming-title {
+            color: var(--text);
+        }
+
+        .past-events {
+            color: var(--text-muted);
+            max-width: 980px;
+        }
+
+        .past-events h4 {
+            color: var(--text);
+            margin-bottom: 10px;
+        }
+
+        .past-events li {
+            background: var(--panel);
+            border: var(--border-soft);
+            color: var(--text-muted);
+            border-radius: 10px;
+        }
+
+        .role-buttons {
+            margin-top: 30px;
+            gap: 16px;
+            align-items: stretch;
+        }
+
+        .role-section {
+            background: var(--panel);
+            border: var(--border-soft);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            padding: 14px;
+            width: min(360px, 100%);
+        }
+
+        .role-visual {
+            width: 100%;
+            height: 130px;
+            border-radius: 12px;
+            object-fit: cover;
+            margin-bottom: 12px;
+        }
+
+        .role-copy {
+            color: var(--text-muted);
+            font-size: 0.9em;
+            margin-bottom: 8px;
+        }
+
+        .role-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+            color: #fff;
+            border-radius: 11px;
+            font-size: 1.05em;
+            padding: 14px 16px;
+            box-shadow: none;
+        }
+
+        .admin-btn {
+            background: linear-gradient(135deg, #7a4aa4, #653490);
+        }
+
+        .register-btn {
+            color: var(--primary);
+            border: 1.5px solid #bed0e2;
+            background: #f8fbff;
+            border-radius: 11px;
+            padding: 12px 14px;
+            font-size: 0.95em;
+        }
+
+        .register-btn:hover {
+            background: #eef5fd;
+        }
+
+        .login-container {
+            border: var(--border-soft);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            max-width: 460px;
+        }
+
+        .login-container h2 {
+            color: var(--text);
+        }
+
+        .form-group label {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            border: 1.5px solid #ccdae8;
+            border-radius: 10px;
+            color: var(--text);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(15, 95, 147, 0.14);
+        }
+
+        .btn {
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+            font-size: 1em;
+            letter-spacing: 0.2px;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, #12689f, #0e4f7b);
+        }
+
+        .back-btn {
+            background: #e9edf2;
+        }
+
+        .dashboard {
+            background: var(--panel);
+            border: var(--border-soft);
+            border-radius: 22px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .dashboard-header {
+            border-bottom: 1px solid #e2e9f1;
+        }
+
+        .dashboard-header h2,
+        .event-card h4 {
+            color: var(--text);
+        }
+
+        .event-form {
+            background: var(--panel-soft);
+            border: var(--border-soft);
+            border-radius: 14px;
+        }
+
+        .event-card {
+            border: var(--border-soft);
+            border-radius: 14px;
+            box-shadow: 0 6px 18px rgba(16, 36, 58, 0.08);
+            background: var(--panel);
+        }
+
+        .event-card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .event-thumb {
+            border-radius: 10px;
+        }
+
+        .participants-count {
+            background: #155a8a;
+        }
+
+        .pending-registrations,
+        .database-results {
+            border: var(--border-soft);
+        }
+
         @media (max-width: 768px) {
             .form-row {
                 grid-template-columns: 1fr;
@@ -823,6 +1063,10 @@
             
             .welcome-screen h1 {
                 font-size: 2em;
+            }
+
+            .welcome-screen {
+                padding: 28px 16px;
             }
         }
     </style>
@@ -836,25 +1080,29 @@
                 <p>Discover and join events hosted by clubs at Kongu Engineering College (KEC)</p>
                 <div class="welcome-images" aria-hidden="false">
                         <figure>
-                            <img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=800&q=60" alt="Technology Workshop">
-                            <figcaption>Tech Club — AI Workshop & Hackathon (Oct 2025)</figcaption>
+                            <img src="./images/tech-workshop.jpg" alt="Technology Workshop">
+                            <figcaption>Tech Club - AI Workshop and Hackathon</figcaption>
                         </figure>
                         <figure>
-                            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=60" alt="Literature Club Meeting">
-                            <figcaption>Literature Club — Poetry Evening (Sept 2025)</figcaption>
+                            <img src="./images/poetry.jpg" alt="Literature Club Meeting">
+                            <figcaption>Literature Club - Poetry Evening</figcaption>
                         </figure>
                         <figure>
-                            <img src="https://images.unsplash.com/photo-1494059980473-813e73ee784b?auto=format&fit=crop&w=800&q=60" alt="Dance Performance">
-                            <figcaption>Dance Club — Annual Dance Show (Aug 2025)</figcaption>
+                            <img src="./images/dance.jpg" alt="Dance Performance">
+                            <figcaption>Dance Club - Annual Dance Show</figcaption>
+                        </figure>
+                        <figure>
+                            <img src="./images/math-workshop.jpg" alt="Math Workshop">
+                            <figcaption>Math Club - Problem Solving Workshop</figcaption>
                         </figure>
                 </div>
 
                     <div class="past-events" aria-label="Past events history">
                         <h4>Past Events</h4>
                         <ul>
-                            <li><strong>Photography Club</strong> — Nature Photography Workshop — Oct 2025</li>
-                            <li><strong>Music Club</strong> — Open Mic Night & Jam Session — Sept 2025</li>
-                            <li><strong>Math Club</strong> — Number Theory Guest Lecture — Aug 2025</li>
+                            <li><strong>Photography Club</strong> - Nature Photography Workshop - Oct 2025</li>
+                            <li><strong>Music Club</strong> - Open Mic Night and Jam Session - Sept 2025</li>
+                            <li><strong>Math Club</strong> - Number Theory Guest Lecture - Aug 2025</li>
                         </ul>
                     </div>
 
@@ -863,15 +1111,21 @@
 
                 <div class="role-buttons">
                     <div class="role-section">
-                        <button class="role-btn" onclick="showLogin('student')">👨‍🎓 Student Login</button>
+                        <img src="./images/poetry.jpg" alt="Student Activities" class="role-visual">
+                        <p class="role-copy">Browse clubs, join events, and track your participation.</p>
+                        <button class="role-btn" onclick="showLogin('student')">Student Login</button>
                         <button class="register-btn" onclick="showRegister('student')">Register as Student</button>
                     </div>
                     <div class="role-section">
-                        <button class="role-btn" onclick="showLogin('manager')">👨‍💼 Manager Login</button>
+                        <img src="./images/tech-workshop.jpg" alt="Manager Activities" class="role-visual">
+                        <p class="role-copy">Create and manage events with registration oversight.</p>
+                        <button class="role-btn" onclick="showLogin('manager')">Manager Login</button>
                         <button class="register-btn" onclick="showRegister('manager')">Register as Manager</button>
                     </div>
                     <div class="role-section admin-section">
-                        <button class="role-btn admin-btn" onclick="showLogin('admin')">👑 Admin Login</button>
+                        <img src="./images/clubhub-logo.jpg" alt="Admin Control" class="role-visual">
+                        <p class="role-copy">Approve registrations and monitor platform activity.</p>
+                        <button class="role-btn admin-btn" onclick="showLogin('admin')">Admin Login</button>
                     </div>
                 </div>
             </div>
@@ -911,7 +1165,8 @@
                         <label>Password</label>
                         <input type="password" id="managerPassword" required>
                     </div>
-                    <button type="submit" class="btn">Login</button>
+                    <button type="submit" class="btn" onclick="setManagerLoginTarget('dashboard')">Login</button>
+                    <button type="submit" class="btn" style="margin-top: 10px;" onclick="setManagerLoginTarget('createEvent')">Login and Add Event</button>
                     <button type="button" class="btn back-btn" onclick="showWelcome()">Back</button>
                     <p class="switch-form">
                         New manager? <a href="#" onclick="showRegister('manager'); return false;">Register here</a>
@@ -924,7 +1179,7 @@
         <div id="studentDashboard" class="page">
             <div class="dashboard">
                 <div class="dashboard-header">
-                    <h2>Welcome, <span id="studentName"></span>! 👋</h2>
+                    <h2>Welcome, <span id="studentName"></span>!</h2>
                     <button class="logout-btn" onclick="logout()">Logout</button>
                 </div>
                 <h3>Upcoming Events</h3>
@@ -941,7 +1196,7 @@
                 
                 <div class="event-form">
                     <h3>Create New Event</h3>
-                    <form onsubmit="createEvent(event)">
+                    <form id="managerEventForm" onsubmit="createEvent(event)">
                         <div class="form-row">
                             <div class="form-group">
                                 <label>Club Name</label>
@@ -1315,6 +1570,7 @@
         // Load data from localStorage
         let currentUser = null;
         let currentRole = null;
+        let managerLoginTarget = 'dashboard';
         let users = DB.load('mathclub_users', {
             students: {},
             managers: {},
@@ -1426,7 +1682,14 @@
         }
 
         function showLogin(role) {
+            if (role === 'manager') {
+                managerLoginTarget = 'dashboard';
+            }
             showPage(role + 'Login');
+        }
+
+        function setManagerLoginTarget(target) {
+            managerLoginTarget = target;
         }
 
         function showRegister(role) {
@@ -1512,6 +1775,17 @@
 
             // Show appropriate dashboard
             showDashboard(role);
+
+            if (role === 'manager' && managerLoginTarget === 'createEvent') {
+                const managerEventForm = document.getElementById('managerEventForm');
+                const eventNameInput = document.getElementById('eventName');
+                if (managerEventForm) {
+                    managerEventForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                if (eventNameInput) {
+                    eventNameInput.focus();
+                }
+            }
             
             // Clear form and error message
             e.target.reset();
@@ -1718,7 +1992,7 @@
             e.preventDefault();
             
             const posterPreview = document.getElementById('posterPreview');
-            const posterData = posterPreview.dataset.posterData || 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=800&q=60';
+            const posterData = posterPreview.dataset.posterData || './images/tech-workshop.jpg';
             
             const newEvent = {
                 id: eventIdCounter++,
@@ -1825,20 +2099,20 @@
                 card.innerHTML = `
                     <img src="${event.poster}" alt="${event.name} poster" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 15px;">
                     <h4 style="color: #667eea; margin-bottom: 10px; font-size: 1.2em;">${event.name}</h4>
-                    <p style="color: #667eea; font-weight: bold; margin-bottom: 8px;">🏛️ ${event.club || 'General Club'}</p>
-                    <p class="event-date" style="color: #ff6b6b; margin-bottom: 8px;">📅 ${formatDate(event.date)}</p>
-                    <p class="event-time" style="color: #40c057; margin-bottom: 8px;">⏰ ${formatTime(event.startTime)} - ${formatTime(event.endTime)}</p>
-                    <p style="margin-bottom: 8px;">📍 ${event.location}</p>
+                    <p style="color: #667eea; font-weight: bold; margin-bottom: 8px;">Club: ${event.club || 'General Club'}</p>
+                    <p class="event-date" style="color: #ff6b6b; margin-bottom: 8px;">Date: ${formatDate(event.date)}</p>
+                    <p class="event-time" style="color: #40c057; margin-bottom: 8px;">Time: ${formatTime(event.startTime)} - ${formatTime(event.endTime)}</p>
+                    <p style="margin-bottom: 8px;">Location: ${event.location}</p>
                     <p style="color: #666; margin-bottom: 15px;">${event.description}</p>
                     <span class="participants-count" style="background: #667eea; color: white; padding: 5px 10px; border-radius: 20px; font-size: 0.85em;">
-                        👥 ${event.participants.length} joined
+                        Participants: ${event.participants.length}
                     </span>
                     <div class="event-actions" style="margin-top: 15px;">
                         <button class="join-btn ${isJoined ? 'joined' : ''}" 
                                 onclick="joinEvent(${event.id})" 
                                 ${isJoined ? 'disabled' : ''}
                                 style="width: 100%; padding: 10px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; background-color: ${isJoined ? '#adb5bd' : '#51cf66'}; color: white;">
-                            ${isJoined ? '✓ Joined' : 'Join Event'}
+                            ${isJoined ? 'Joined' : 'Join Event'}
                         </button>
                     </div>
                 `;
@@ -1871,11 +2145,11 @@
                 card.innerHTML = `
                     <img src="${event.poster}" alt="${event.name} poster" class="event-thumb" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 15px;">
                     <h4 style="color: #667eea; margin-bottom: 10px; font-size: 1.2em;">${event.name}</h4>
-                    <p style="color: #667eea; font-weight: bold; margin-bottom: 8px;">🏛️ ${event.club || 'General Club'}</p>
-                    <p class="event-date" style="color: #ff6b6b; margin-bottom: 8px;">📅 ${formatDate(event.date)}</p>
-                    <p class="event-time" style="color: #40c057; margin-bottom: 8px;">⏰ ${formatTime(event.startTime)} - ${formatTime(event.endTime)}</p>
-                    <p style="margin-bottom: 8px;">📍 ${event.location}</p>
-                    <span class="participants-count" style="background: #667eea; color: white; padding: 5px 10px; border-radius: 20px; font-size: 0.85em;">👥 ${event.participants.length} joined</span>
+                    <p style="color: #667eea; font-weight: bold; margin-bottom: 8px;">Club: ${event.club || 'General Club'}</p>
+                    <p class="event-date" style="color: #ff6b6b; margin-bottom: 8px;">Date: ${formatDate(event.date)}</p>
+                    <p class="event-time" style="color: #40c057; margin-bottom: 8px;">Time: ${formatTime(event.startTime)} - ${formatTime(event.endTime)}</p>
+                    <p style="margin-bottom: 8px;">Location: ${event.location}</p>
+                    <span class="participants-count" style="background: #667eea; color: white; padding: 5px 10px; border-radius: 20px; font-size: 0.85em;">Participants: ${event.participants.length}</span>
                 `;
                 container.appendChild(card);
             });
@@ -1905,19 +2179,19 @@
                 card.innerHTML = `
                     <img src="${event.poster}" alt="${event.name} poster" class="event-thumb" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 15px;">
                     <h4 style="color: #667eea; margin-bottom: 10px; font-size: 1.2em;">${event.name}</h4>
-                    <p style="color: #667eea; font-weight: bold; margin-bottom: 8px;">🏛️ ${event.club || 'General Club'}</p>
-                    <p class="event-date" style="color: #ff6b6b; margin-bottom: 8px;">📅 ${formatDate(event.date)}</p>
-                    <p class="event-time" style="color: #40c057; margin-bottom: 8px;">⏰ ${formatTime(event.startTime)} - ${formatTime(event.endTime)}</p>
-                    <p style="margin-bottom: 8px;">📍 ${event.location}</p>
+                    <p style="color: #667eea; font-weight: bold; margin-bottom: 8px;">Club: ${event.club || 'General Club'}</p>
+                    <p class="event-date" style="color: #ff6b6b; margin-bottom: 8px;">Date: ${formatDate(event.date)}</p>
+                    <p class="event-time" style="color: #40c057; margin-bottom: 8px;">Time: ${formatTime(event.startTime)} - ${formatTime(event.endTime)}</p>
+                    <p style="margin-bottom: 8px;">Location: ${event.location}</p>
                     <p style="color: #495057; margin: 15px 0;">${event.description}</p>
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
                         <span class="participants-count" style="background: #667eea; color: white; padding: 5px 10px; border-radius: 20px; font-size: 0.85em;">
-                            👥 ${event.participants.length} joined
+                            Participants: ${event.participants.length}
                         </span>
                         <button class="btn ${hasJoined ? 'leave-btn' : 'join-btn'}" 
                                 onclick="toggleEventParticipation(${event.id}, '${hasJoined ? 'leave' : 'join'}')"
                                 style="padding: 8px 16px; border-radius: 20px; border: none; cursor: pointer; font-weight: bold; ${hasJoined ? 'background: #ff6b6b;' : 'background: #40c057;'} color: white;">
-                            ${hasJoined ? '🚪 Leave Event' : '✨ Join Event'}
+                            ${hasJoined ? 'Leave Event' : 'Join Event'}
                         </button>
                     </div>
                 `;
@@ -1953,13 +2227,13 @@
                 card.innerHTML = `
                     <img src="${event.poster}" alt="${event.name} poster" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 15px;">
                     <h4 style="color: #667eea; margin-bottom: 10px; font-size: 1.2em;">${event.name}</h4>
-                    <p style="color: #667eea; font-weight: bold; margin-bottom: 8px;">🏛️ ${event.club || 'General Club'}</p>
-                    <p class="event-date" style="color: #ff6b6b; margin-bottom: 8px;">📅 ${formatDate(event.date)}</p>
-                    <p class="event-time" style="color: #40c057; margin-bottom: 8px;">⏰ ${formatTime(event.startTime)} - ${formatTime(event.endTime)}</p>
-                    <p style="margin-bottom: 8px;">📍 ${event.location}</p>
+                    <p style="color: #667eea; font-weight: bold; margin-bottom: 8px;">Club: ${event.club || 'General Club'}</p>
+                    <p class="event-date" style="color: #ff6b6b; margin-bottom: 8px;">Date: ${formatDate(event.date)}</p>
+                    <p class="event-time" style="color: #40c057; margin-bottom: 8px;">Time: ${formatTime(event.startTime)} - ${formatTime(event.endTime)}</p>
+                    <p style="margin-bottom: 8px;">Location: ${event.location}</p>
                     <p style="color: #666; margin-bottom: 15px;">${event.description}</p>
                     <span class="participants-count" style="background: #667eea; color: white; padding: 5px 10px; border-radius: 20px; font-size: 0.85em;">
-                        👥 ${event.participants.length} participants
+                        Participants: ${event.participants.length}
                     </span>
                     ${event.participants.length > 0 ? `
                         <div style="margin-top: 15px; background: #f8f9fa; border-radius: 8px; padding: 15px;">
@@ -2008,3 +2282,5 @@
     </script>
 </body>
 </html>
+
+
